@@ -15,8 +15,10 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24),
+      padding:  EdgeInsets.only(left: width * 0.05, right: width * 0.05, bottom: height * 0.02),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: BottomNavigationBar(
@@ -33,7 +35,7 @@ class CustomBottomNavBar extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Image.asset(
                 AppAssets.homeIcon,
-                height: 24,
+                height: height * 0.03,
                 color: currentIndex == 0 ? Colors.yellow : Colors.white,
               ),
               label: "",
@@ -41,7 +43,7 @@ class CustomBottomNavBar extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Image.asset(
                 AppAssets.searchIcon,
-                height: 24,
+                height: height * 0.03,
                 color: currentIndex == 1 ? Colors.yellow : Colors.white,
               ),
               label: "",
@@ -49,7 +51,7 @@ class CustomBottomNavBar extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Image.asset(
                 AppAssets.browseIcon,
-                height: 24,
+                height: height * 0.03,
                 color: currentIndex == 2 ? Colors.yellow : Colors.white,
               ),
               label: "",
@@ -57,7 +59,7 @@ class CustomBottomNavBar extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Image.asset(
                 AppAssets.profileIcon,
-                height: 24,
+                height: height * 0.03,
                 color: currentIndex == 3 ? Colors.yellow : Colors.white,
               ),
               label: "",
