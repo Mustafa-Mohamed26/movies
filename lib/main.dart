@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.onboarding1,
       routes: {
         AppRoutes.login: (context) =>  LoginScreen(),
+
         AppRoutes.register: (context) =>  RegisterScreen(),
         AppRoutes.forgotPassword: (context) =>  ForgotPasswordScreen(),
         AppRoutes.onboarding1: (context) =>  FirstOnBoarding(),
