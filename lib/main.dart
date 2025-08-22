@@ -7,6 +7,7 @@ import 'package:movies/ui/auth/login_screen.dart';
 import 'package:movies/ui/auth/register_screen.dart';
 import 'package:movies/ui/home/home_screen.dart';
 import 'package:movies/ui/home/profile_screen.dart';
+import 'package:movies/ui/home/update_profile/update_profile.dart';
 import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_theme.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      initialRoute: AppRoutes.onboarding1,
+      initialRoute: AppRoutes.updateProfile,
       routes: {
         AppRoutes.login: (context) => const LoginScreen(),
         AppRoutes.register: (context) => const RegisterScreen(),
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.onboarding2: (context) => const OnBoarding(),
         AppRoutes.home: (context) =>  HomeScreen(),
         AppRoutes.profile: (context) => const ProfileScreen(),
+        AppRoutes.updateProfile: (context) => const UpdateProfile(),
       },
 
       darkTheme: AppTheme.darkTheme,
