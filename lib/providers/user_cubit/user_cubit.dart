@@ -8,6 +8,9 @@ class UserCubit extends Cubit<UserStates>{
 
   void updateUser(User user){
     emit(UserUpdated(user));
-    
+  }
+
+  void updateToken(String token){
+    emit(TokenUpdated(token));
   }
 }
