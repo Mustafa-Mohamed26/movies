@@ -16,6 +16,7 @@ class AppAssets{
   static const String onBoarding3 = 'assets/images/OnBoarding_3.png';
   static const String onBoarding4 = 'assets/images/OnBoarding_4.png';
   static const String onBoarding5 = 'assets/images/OnBoarding_5.png';
+  static const String avatarGamer = 'assets/images/gamer (1).png';
   static const String avatar_1 = 'assets/images/avatar1.png';
   static const String avatar_2 = 'assets/images/avatar2.png';
   static const String avatar_3 = 'assets/images/avatar3.png';
