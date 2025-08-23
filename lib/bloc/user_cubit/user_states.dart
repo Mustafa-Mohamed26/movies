@@ -5,14 +5,17 @@ abstract class UserStates {}
 class UserInitial extends UserStates {}
 
 class UserLoaded extends UserStates {
-  // represents the loaded state
   final User user;
   final String token;
 
   UserLoaded({required this.user, required this.token});
 
-  // copyWith method to update the state
-  UserLoaded copyWith({required User user, required String token}) {
-    return UserLoaded(user: user, token: token);
+  // copyWith method with optional parameters
+  UserLoaded copyWith({User? user, String? token}) {
+    return UserLoaded(
+      user: user ?? this.user,
+      token: token ?? this.token,
+    );
   }
 }
+

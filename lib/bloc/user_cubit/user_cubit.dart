@@ -5,20 +5,27 @@ import 'package:movies/bloc/user_cubit/user_states.dart';
 class UserCubit extends Cubit<UserStates> {
   UserCubit() : super(UserInitial());
 
-  // save user and token in cubit
+  // save user and token initially
   void setUserAndToken(User user, String token) {
     emit(UserLoaded(user: user, token: token));
   }
 
-  // update user and token
-  void updateUserAndToken({User? newUser, String? newToken}) {
+  // update only the user
+  void updateUser(User newUser) {
     if (state is UserLoaded) {
-      final currentState = state as UserLoaded; // cast to UserLoaded
+      final currentState = state as UserLoaded;
       emit(
-        currentState.copyWith(
-          user: newUser ?? currentState.user,
-          token: newToken ?? currentState.token,
-        ),
+        currentState.copyWith(user: newUser),
+      );
+    }
+  }
+
+  // update only the token
+  void updateToken(String newToken) {
+    if (state is UserLoaded) {
+      final currentState = state as UserLoaded;
+      emit(
+        currentState.copyWith(token: newToken),
       );
     }
   }
