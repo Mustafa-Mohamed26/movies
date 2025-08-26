@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/bloc/user_cubit/user_cubit.dart';
+import 'package:movies/ui/details/details_screen.dart';
 import 'package:movies/ui/on_boarding/first-on-boarding.dart';
 import 'package:movies/ui/on_boarding/on_boarding.dart';
 import 'package:movies/ui/auth/forgot_password_screen.dart';
@@ -44,6 +45,10 @@ class MyApp extends StatelessWidget {
         AppRoutes.home: (context) => HomeScreen(),
         AppRoutes.profile: (context) => ProfileScreen(),
         AppRoutes.updateProfile: (context) => UpdateProfile(),
+        AppRoutes.details: (context) {
+          final movieId = ModalRoute.of(context)!.settings.arguments as int;
+          return DetailsScreen(movieId: movieId);
+        },
       },
 
       darkTheme: AppTheme.darkTheme,

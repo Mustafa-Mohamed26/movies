@@ -1,12 +1,13 @@
-class MovieSuggestions {
+class MovieSuggestionsResponse {
   String? status;
   String? statusMessage;
   Data? data;
   Meta? meta;
 
-  MovieSuggestions({this.status, this.statusMessage, this.data, this.meta});
+  MovieSuggestionsResponse(
+      {this.status, this.statusMessage, this.data, this.meta});
 
-  MovieSuggestions.fromJson(Map<String, dynamic> json) {
+  MovieSuggestionsResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     statusMessage = json['status_message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -116,7 +117,7 @@ class Movies {
     titleLong = json['title_long'];
     slug = json['slug'];
     year = json['year'];
-    rating = json['rating'];
+    rating = (json['rating'] != null) ? (json['rating'] as num).toDouble() : null;
     runtime = json['runtime'];
     genres = json['genres'].cast<String>();
     summary = json['summary'];
