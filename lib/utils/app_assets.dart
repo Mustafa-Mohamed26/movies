@@ -33,4 +33,14 @@ class AppAssets{
   static const String avatar_7 = 'assets/images/avatar7.png';
   static const String avatar_8 = 'assets/images/avatar8.png';
   static const String avatar_9 = 'assets/images/avatar9.png';
+  static const String test1 = "assets/images/slider_test_!.png";
+  static const String test2 = "assets/images/slider_test_2.png";
+  static const String test3 = "assets/images/Doctor Strange 1.png";
+  static const String test4 = "assets/images/test4.png";
+  static const String test5 = "assets/images/testCastImage.png";
+  static const String saveIcon = "assets/images/save.png";
+  static const String playIcon = "assets/images/play_movie.png";
+  static const String heartIcon = "assets/images/heart.png";
+  static const String clockIcon = "assets/images/clock.png";
+  static const String starIcon = "assets/images/star.png";
 }
