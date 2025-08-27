@@ -26,13 +26,9 @@ class ApiManager {
     }
   }
 
-  static Future<MovieSuggestionsResponse?> getMovieSuggestions({
-    required int? movieId,
-  }) async {
+  static Future<MovieSuggestionsResponse?> getMovieSuggestions({required int? movieId,}) async {
     Uri url = Uri.https(
-      ApiConstants.moviesBaseUrl,
-      EndPoints.movieSuggestionsApi,
-      {"movie_id": movieId.toString()},
+      ApiConstants.moviesBaseUrl, EndPoints.movieSuggestionsApi, {"movie_id": movieId.toString()},
     );
 
     try {
@@ -44,4 +40,28 @@ class ApiManager {
       throw Exception(e);
     }
   }
+
+  Future<void> changePassword({required String currentPassword, required String newPassword,}) async {
+    Uri url= Uri.https(ApiConstants.moviesBaseUrl ,EndPoints.movieDetailsApi
+     ,{
+      "" : currentPassword,
+      "" : newPassword
+        }
+    );
+    try{
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data['success'] != true) {
+        throw Exception(data['message'] ?? 'failed to change password');
+      }
+    } else {
+      throw Exception('Wrong in Service: ${response.statusCode}');
+    }
+  }catch(e){
+      throw Exception(e);
+    }
+
+  }
+
 }

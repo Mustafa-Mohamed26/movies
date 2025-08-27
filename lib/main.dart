@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/bloc/user_cubit/user_cubit.dart';
 import 'package:movies/ui/details/details_screen.dart';
+import 'package:movies/ui/home/profile_tab/reset_password.dart';
 import 'package:movies/ui/on_boarding/first-on-boarding.dart';
 import 'package:movies/ui/on_boarding/on_boarding.dart';
 import 'package:movies/ui/auth/forgot_password_screen.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      initialRoute: AppRoutes.updateProfile,
+      initialRoute: AppRoutes.resetPassword,
       routes: {
         AppRoutes.login: (context) => LoginScreen(),
         AppRoutes.register: (context) => RegisterScreen(),
@@ -49,6 +50,8 @@ class MyApp extends StatelessWidget {
           final movieId = ModalRoute.of(context)!.settings.arguments as int;
           return DetailsScreen(movieId: movieId);
         },
+        AppRoutes.resetPassword: (context) => ResetPassword(),
+
       },
 
       darkTheme: AppTheme.darkTheme,
