@@ -1,49 +1,31 @@
+
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/api/api_manager.dart';
+import 'package:http/http.dart' as http;
 import 'package:movies/bloc/reset_cubit/reset_password_state.dart';
+import 'package:movies/models/reset_password_response.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../api/api_manager.dart';
 
 class ResetPasswordCubit extends Cubit<ResetPasswordState> {
-  ResetPasswordCubit() : super(ResetPasswordInitial());
+  ResetPasswordCubit() : super(ResetPasswordLoading());
+  void changePassword({required String newPass, required String oldPass})async{
+    try{
+      emit(ResetPasswordLoading());
+      var response=await ApiManager.changePassword(newPass: newPass, oldPass: oldPass);
+      if(response!.statusCode == "400"){
+        emit(ResetPasswordError(errorMessage: response.message.toString()));
+        return;
+      } if(response!.statusCode =='200'){
+        emit( ResetPasswordSuccess());
+        return;
+      }
 
-  final ApiManager _apiService = ApiManager();
-
-  Future<void> changePassword({
-    required String currentPassword,
-    required String newPassword,
-    required String confirmPassword,
-  }) async {
-    if (currentPassword.isEmpty) {
-      emit(ResetPasswordFailure(error: "كلمة المرور الحالية مطلوبة"));
-      return;
-    }
-
-    if (newPassword.isEmpty || newPassword.length < 6) {
-      emit(ResetPasswordFailure(error: "كلمة المرور الجديدة يجب أن تكون至少 6 أحرف"));
-      return;
-    }
-
-    if (newPassword != confirmPassword) {
-      emit(ResetPasswordFailure(error: "كلمتا المرور غير متطابقتين"));
-      return;
-    }
-
-    emit(ResetPasswordLoading());
-
-    try {
-      // استدعاء الـ API هنا داخل التراى كاتش
-      await _apiService.changePassword(
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-      );
-
-      emit(ResetPasswordSuccess(message: "تم تغيير كلمة المرور بنجاح!"));
-
-    } catch (e) {
-      emit(ResetPasswordFailure(error: "خطأ في تغيير كلمة المرور: ${e.toString()}"));
+    }catch(e){
+      emit(ResetPasswordError(errorMessage: e.toString()));
     }
   }
 
-  void resetState() {
-    emit(ResetPasswordInitial());
-  }
 }

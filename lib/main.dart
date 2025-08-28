@@ -14,8 +14,12 @@ import 'package:movies/ui/home/profile_tab/profile_screen_tab.dart';
 import 'package:movies/ui/home/profile_tab/update_profile.dart';
 import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
   runApp(MyApp());
 }
 
