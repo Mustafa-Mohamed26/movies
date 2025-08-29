@@ -1,8 +1,9 @@
 import 'dart:developer';
-
 import 'package:http/http.dart' as http;
 import 'package:movies/api/api_constants.dart';
 import 'package:movies/api/end_points.dart';
+import 'package:movies/models/login_request.dart';
+import 'package:movies/models/login_response.dart';
 import 'package:movies/models/delete_account_response.dart';
 import 'dart:convert';
 import 'package:movies/models/movie_details_response.dart';
@@ -76,6 +77,18 @@ class ApiManager {
     }
   }
 
+  static Future<LoginResponse?> login(LoginRequest loginRequest) async {
+    Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.loginApi);
+    try {
+      var response = await http.post(
+        url,
+        body: {'email': loginRequest.email, 'password': loginRequest.password},
+      );
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return LoginResponse.fromJson(json);
+
+
 
 
 
@@ -124,34 +137,7 @@ class ApiManager {
 
 }
 
-  Future<LoginResponse> login({required String email, required String password}) async {
-    try {
-      Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.login);
-
-      var response = await http.post(
-        url,
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        var responseBody = response.body;
-        var json = jsonDecode(responseBody);
-        var loginResponse = LoginResponse.fromJson(json);
-
-        await _storeToken(loginResponse.token!);
-
-        return loginResponse;
-      } else {
-        throw Exception("Login failed: ${response.statusCode} - ${response.body}");
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
+  
 
    Future<void> _storeToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
@@ -186,10 +172,13 @@ class ApiManager {
       } else {
         throw Exception("Failed to change password: ${response.statusCode} - ${response.body}");
       }
+
     } catch (e) {
       throw Exception(e);
     }
   }
+
+
 
 
  Future<DeleteAccountResponse> deleteProfile() async {
@@ -258,4 +247,5 @@ class ApiManager {
   } catch (e) {
     throw Exception(e.toString());
   }
+
 }
