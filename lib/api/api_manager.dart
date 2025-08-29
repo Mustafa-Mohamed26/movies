@@ -3,10 +3,13 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:movies/api/api_constants.dart';
 import 'package:movies/api/end_points.dart';
+import 'package:movies/models/delete_account_response.dart';
 import 'dart:convert';
 import 'package:movies/models/movie_details_response.dart';
 
 import 'package:movies/models/movie_suggestions_response.dart' hide Movies;
+import 'package:movies/models/update_profile_request.dart';
+import 'package:movies/models/update_profile_response.dart';
 import '../models/list_of_movies_response.dart';
 
 import 'package:movies/models/movie_suggestions_response.dart';
@@ -101,7 +104,7 @@ class ApiManager {
 
 }
 
-  static Future<LoginResponse> login({required String email, required String password}) async {
+  Future<LoginResponse> login({required String email, required String password}) async {
     try {
       Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.login);
 
@@ -130,14 +133,14 @@ class ApiManager {
     }
   }
 
-  static Future<void> _storeToken(String token) async {
+   Future<void> _storeToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_token', token);
 
 
   }
 
-  static Future<ResetPasswordResponse?> changePassword({required String newPass, required String oldPass}) async {
+   Future<ResetPasswordResponse?> changePassword({required String newPass, required String oldPass}) async {
     try {
 
 //timp token until take from cash
@@ -169,7 +172,70 @@ class ApiManager {
   }
 
 
+ Future<DeleteAccountResponse> deleteProfile() async {
+  try {
+    String? token = await getToken();
 
+    if (token == null) {
+      throw Exception("User token not found!");
+    }
 
+    Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.deleteAccount);
+
+    var response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return DeleteAccountResponse.fromJson(json);
+    }
+    else {
+      throw Exception(
+          "Delete failed: ${response.statusCode} - ${response.body}");
+    }
+  } catch (e) {
+    throw Exception(e.toString());
+  }
 }
 
+   Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("user_token");
+  }
+
+  Future<UpdateProfileResponse> updateProfile(UpdateProfileRequest request) async {
+  try {
+    String? token = await getToken();
+
+    if (token == null) {
+      throw Exception("User token not found!");
+    }
+
+    Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.updateProfile);
+
+    var response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(request.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      return UpdateProfileResponse.fromJson(json);
+    } else {
+      throw Exception(
+          "Update failed: ${response.statusCode} - ${response.body}");
+    }
+  } catch (e) {
+    throw Exception(e.toString());
+  }
+}

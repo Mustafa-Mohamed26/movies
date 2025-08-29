@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:movies/models/update_profile_request.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
+
+import '../../../api/api_manager.dart' as ApiManager;
 
 class UpdateProfile extends StatelessWidget {
   const UpdateProfile({super.key});
@@ -18,7 +21,7 @@ class UpdateProfile extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: AppColors.yellow),
           onPressed: () {
 
-            //todo: Navigator.pop(context);
+             Navigator.pop(context);
           },
         ),
         title: Text(
@@ -105,8 +108,18 @@ class UpdateProfile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async{
                     // TODO: Delete Account Logic
+                    try {
+                      final result = await ApiManager.deleteProfile();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(result.message)),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("خطأ: $e")),
+                      );
+                    }
                   },
                   child: Text(
                     "Delete Account",
@@ -129,8 +142,23 @@ class UpdateProfile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async{
                     // todo: Update Data Logic
+                    try {
+                      final result = await ApiManager.updateProfile(
+                        UpdateProfileRequest(
+                          name: "john safwat",
+                          phone: "0100000000",
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(result.message)),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("خطأ: $e")),
+                      );
+                    }
                   },
                   child: Text(
                       "Update Data",
