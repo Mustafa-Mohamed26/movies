@@ -2,15 +2,13 @@ class ListOfMoviesResponse {
   String? status;
   String? statusMessage;
   Data? data;
-  Meta? meta;
 
-  ListOfMoviesResponse({this.status, this.statusMessage, this.data, this.meta});
+  ListOfMoviesResponse({this.status, this.statusMessage, this.data});
 
   ListOfMoviesResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     statusMessage = json['status_message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    meta = json['@meta'] != null ? Meta.fromJson(json['@meta']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -19,9 +17,6 @@ class ListOfMoviesResponse {
     data['status_message'] = statusMessage;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
-    }
-    if (meta != null) {
-      data['@meta'] = meta!.toJson();
     }
     return data;
   }
@@ -36,9 +31,9 @@ class Data {
   Data({this.movieCount, this.limit, this.pageNumber, this.movies});
 
   Data.fromJson(Map<String, dynamic> json) {
-    movieCount = json['movie_count'];
-    limit = json['limit'];
-    pageNumber = json['page_number'];
+    movieCount = json['movie_count'] is int ? json['movie_count'] : int.tryParse('${json['movie_count']}');
+    limit = json['limit'] is int ? json['limit'] : int.tryParse('${json['limit']}');
+    pageNumber = json['page_number'] is int ? json['page_number'] : int.tryParse('${json['page_number']}');
     if (json['movies'] != null) {
       movies = <Movies>[];
       json['movies'].forEach((v) {
@@ -83,50 +78,52 @@ class Movies {
   String? mediumCoverImage;
   String? largeCoverImage;
   String? state;
-  List<Torrents>? torrents;
   String? dateUploaded;
   int? dateUploadedUnix;
 
-  Movies(
-      {this.id,
-      this.url,
-      this.imdbCode,
-      this.title,
-      this.titleEnglish,
-      this.titleLong,
-      this.slug,
-      this.year,
-      this.rating,
-      this.runtime,
-      this.genres,
-      this.summary,
-      this.descriptionFull,
-      this.synopsis,
-      this.ytTrailerCode,
-      this.language,
-      this.mpaRating,
-      this.backgroundImage,
-      this.backgroundImageOriginal,
-      this.smallCoverImage,
-      this.mediumCoverImage,
-      this.largeCoverImage,
-      this.state,
-      this.torrents,
-      this.dateUploaded,
-      this.dateUploadedUnix});
+  Movies({
+    this.id,
+    this.url,
+    this.imdbCode,
+    this.title,
+    this.titleEnglish,
+    this.titleLong,
+    this.slug,
+    this.year,
+    this.rating,
+    this.runtime,
+    this.genres,
+    this.summary,
+    this.descriptionFull,
+    this.synopsis,
+    this.ytTrailerCode,
+    this.language,
+    this.mpaRating,
+    this.backgroundImage,
+    this.backgroundImageOriginal,
+    this.smallCoverImage,
+    this.mediumCoverImage,
+    this.largeCoverImage,
+    this.state,
+    this.dateUploaded,
+    this.dateUploadedUnix,
+  });
 
   Movies.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'] is int ? json['id'] : int.tryParse('${json['id']}');
     url = json['url'];
     imdbCode = json['imdb_code'];
     title = json['title'];
     titleEnglish = json['title_english'];
     titleLong = json['title_long'];
     slug = json['slug'];
-    year = json['year'];
-    rating = json['rating'];
-    runtime = json['runtime'];
-    genres = json['genres'].cast<String>();
+    year = json['year'] is int ? json['year'] : int.tryParse('${json['year']}');
+
+    // 👇 Safely cast rating (int or double)
+    rating = json['rating'] != null ? (json['rating'] as num).toDouble() : null;
+
+    runtime = json['runtime'] is int ? json['runtime'] : int.tryParse('${json['runtime']}');
+    genres = json['genres'] != null ? List<String>.from(json['genres']) : null;
     summary = json['summary'];
     descriptionFull = json['description_full'];
     synopsis = json['synopsis'];
@@ -139,14 +136,10 @@ class Movies {
     mediumCoverImage = json['medium_cover_image'];
     largeCoverImage = json['large_cover_image'];
     state = json['state'];
-    if (json['torrents'] != null) {
-      torrents = <Torrents>[];
-      json['torrents'].forEach((v) {
-        torrents!.add(Torrents.fromJson(v));
-      });
-    }
     dateUploaded = json['date_uploaded'];
-    dateUploadedUnix = json['date_uploaded_unix'];
+    dateUploadedUnix = json['date_uploaded_unix'] is int
+        ? json['date_uploaded_unix']
+        : int.tryParse('${json['date_uploaded_unix']}');
   }
 
   Map<String, dynamic> toJson() {
@@ -174,109 +167,8 @@ class Movies {
     data['medium_cover_image'] = mediumCoverImage;
     data['large_cover_image'] = largeCoverImage;
     data['state'] = state;
-    if (torrents != null) {
-      data['torrents'] = torrents!.map((v) => v.toJson()).toList();
-    }
     data['date_uploaded'] = dateUploaded;
     data['date_uploaded_unix'] = dateUploadedUnix;
-    return data;
-  }
-}
-
-class Torrents {
-  String? url;
-  String? hash;
-  String? quality;
-  String? type;
-  String? isRepack;
-  String? videoCodec;
-  String? bitDepth;
-  String? audioChannels;
-  int? seeds;
-  int? peers;
-  String? size;
-  int? sizeBytes;
-  String? dateUploaded;
-  int? dateUploadedUnix;
-
-  Torrents(
-      {this.url,
-      this.hash,
-      this.quality,
-      this.type,
-      this.isRepack,
-      this.videoCodec,
-      this.bitDepth,
-      this.audioChannels,
-      this.seeds,
-      this.peers,
-      this.size,
-      this.sizeBytes,
-      this.dateUploaded,
-      this.dateUploadedUnix});
-
-  Torrents.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    hash = json['hash'];
-    quality = json['quality'];
-    type = json['type'];
-    isRepack = json['is_repack'];
-    videoCodec = json['video_codec'];
-    bitDepth = json['bit_depth'];
-    audioChannels = json['audio_channels'];
-    seeds = json['seeds'];
-    peers = json['peers'];
-    size = json['size'];
-    sizeBytes = json['size_bytes'];
-    dateUploaded = json['date_uploaded'];
-    dateUploadedUnix = json['date_uploaded_unix'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['url'] = url;
-    data['hash'] = hash;
-    data['quality'] = quality;
-    data['type'] = type;
-    data['is_repack'] = isRepack;
-    data['video_codec'] = videoCodec;
-    data['bit_depth'] = bitDepth;
-    data['audio_channels'] = audioChannels;
-    data['seeds'] = seeds;
-    data['peers'] = peers;
-    data['size'] = size;
-    data['size_bytes'] = sizeBytes;
-    data['date_uploaded'] = dateUploaded;
-    data['date_uploaded_unix'] = dateUploadedUnix;
-    return data;
-  }
-}
-
-class Meta {
-  int? serverTime;
-  String? serverTimezone;
-  int? apiVersion;
-  String? executionTime;
-
-  Meta(
-      {this.serverTime,
-      this.serverTimezone,
-      this.apiVersion,
-      this.executionTime});
-
-  Meta.fromJson(Map<String, dynamic> json) {
-    serverTime = json['server_time'];
-    serverTimezone = json['server_timezone'];
-    apiVersion = json['api_version'];
-    executionTime = json['execution_time'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['server_time'] = serverTime;
-    data['server_timezone'] = serverTimezone;
-    data['api_version'] = apiVersion;
-    data['execution_time'] = executionTime;
     return data;
   }
 }
