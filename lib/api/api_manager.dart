@@ -1,13 +1,20 @@
+import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'package:movies/api/api_constants.dart';
 import 'package:movies/api/end_points.dart';
 import 'dart:convert';
 import 'package:movies/models/movie_details_response.dart';
+
+import 'package:movies/models/movie_suggestions_response.dart' hide Movies;
+import '../models/list_of_movies_response.dart';
+
 import 'package:movies/models/movie_suggestions_response.dart';
 import 'package:movies/models/reset_password_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/login_response.dart' show LoginResponse;
+
 class ApiManager {
   static Future<MovieDetailsResponse?> getMovieDetails({
     required int? movieId,
@@ -46,6 +53,53 @@ class ApiManager {
     }
   }
 
+
+
+
+  static Future<ListOfMoviesResponse> getNewMoviesList()async{
+    Uri url = Uri.https(ApiConstants.moviesBaseUrl,
+    EndPoints.listMoviesApi,
+      {
+        "sort_by":" years"
+      }
+
+    );
+    try{
+      var response = await http.get(url);
+      var responseBody = response.body;
+      log(responseBody);
+      var json = jsonDecode(responseBody);
+      return ListOfMoviesResponse.fromJson(json);
+
+    }catch(e){
+      log(e.toString());
+      throw e.toString();
+    }
+
+  }
+
+  static Future<ListOfMoviesResponse> getNewMoviesListByGenre(String genre)async{
+    Uri url = Uri.https(ApiConstants.moviesBaseUrl,
+    EndPoints.listMoviesApi,
+{
+  "genre" : genre
+}
+    );
+    try{
+      var response = await http.get(url);
+      var responseBody = response.body;
+      log(responseBody);
+      var json = jsonDecode(responseBody);
+      return ListOfMoviesResponse.fromJson(json);
+
+    }catch(e){
+      log(e.toString());
+      throw e.toString();
+    }
+
+  }
+
+}
 
   static Future<LoginResponse> login({required String email, required String password}) async {
     try {
@@ -118,3 +172,4 @@ class ApiManager {
 
 
 }
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/ui/home/home_tab/home_screen_tab.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/widgets/custom_bottom_nav_bar.dart';
 
@@ -13,12 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
-  final List<Widget> pages = [
-    Center(child: Text("Page 0", style: AppStyles.medium36white,)),
-    Center(child: Text("Page 1", style: AppStyles.medium36white,)),
-    Center(child: Text("Page 2", style: AppStyles.medium36white,)),
-    Center(child: Text("Page 3", style: AppStyles.medium36white,)),
-  ];
 
   void onTabSelected(int index) {
     setState(() {
@@ -28,6 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomeScreenTab(onTab: changeCurrentIndex),
+      Center(child: Text("Page 1", style: AppStyles.medium36white,)),
+      Center(child: Text("Page 2", style: AppStyles.medium36white,)),
+      Center(child: Text("Page 3", style: AppStyles.medium36white,)),
+    ];
+
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -37,5 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
         onTabSelected: onTabSelected,
       ),
     );
+  }
+  void changeCurrentIndex(){
+    currentIndex=2;
+    setState(() {
+
+    });
   }
 }
