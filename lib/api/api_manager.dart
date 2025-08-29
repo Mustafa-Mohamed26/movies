@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:movies/api/api_constants.dart';
 import 'package:movies/api/end_points.dart';
+import 'package:movies/models/login_request.dart';
+import 'package:movies/models/login_response.dart';
 import 'dart:convert';
 import 'package:movies/models/movie_details_response.dart';
 import 'package:movies/models/movie_suggestions_response.dart';
@@ -40,6 +42,20 @@ class ApiManager {
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return MovieSuggestionsResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+  static Future<LoginResponse?> login(LoginRequest loginRequest) async {
+    Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.loginApi);
+    try {
+      var response = await http.post(
+        url,
+        body: {'email': loginRequest.email, 'password': loginRequest.password},
+      );
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return LoginResponse.fromJson(json);
     } catch (e) {
       throw Exception(e);
     }
