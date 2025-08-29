@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/bloc/user_cubit/user_cubit.dart';
 import 'package:movies/ui/details/details_screen.dart';
+import 'package:movies/ui/home/profile_tab/reset_password.dart';
 import 'package:movies/ui/on_boarding/first-on-boarding.dart';
 import 'package:movies/ui/on_boarding/on_boarding.dart';
 import 'package:movies/ui/auth/forgot_password_screen.dart';
@@ -13,8 +14,12 @@ import 'package:movies/ui/home/profile_tab/profile_screen_tab.dart';
 import 'package:movies/ui/home/profile_tab/update_profile.dart';
 import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
   runApp(MyApp());
 }
 
@@ -34,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
+      
       initialRoute: AppRoutes.home,
       routes: {
         AppRoutes.login: (context) => LoginScreen(),
@@ -49,6 +54,8 @@ class MyApp extends StatelessWidget {
           final movieId = ModalRoute.of(context)!.settings.arguments as int;
           return DetailsScreen(movieId: movieId);
         },
+        AppRoutes.resetPassword: (context) => ResetPassword(),
+
       },
 
       darkTheme: AppTheme.darkTheme,
