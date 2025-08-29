@@ -7,5 +7,7 @@ class EndPoints {
   static String listMoviesApi = "/api/v2/list_movies.json";
   static String resetPassword = '/auth/reset-password';
   static String login = '/auth/login';
+  static String deleteAccount = '/profile';
+  static String updateProfile = '/profile';
 
 }

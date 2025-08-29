@@ -8,6 +8,7 @@ import 'package:movies/models/reset_password_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/api_manager.dart';
+import '../../api/api_manager.dart' as ApiManager;
 
 class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   ResetPasswordCubit() : super(ResetPasswordLoading());
