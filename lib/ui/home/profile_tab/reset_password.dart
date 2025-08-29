@@ -24,15 +24,15 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPasswordState extends State<ResetPassword> {
   final TextEditingController password = TextEditingController(
-      text: "VeryStrongNewPassword456!"
+      text: "VeryStrongNewPassword456!21"
   );
 
   final TextEditingController newPassword = TextEditingController(
-      text: "VeryStrongNewPassword456!21"
+      text: "VeryStrongNewPassword456!"
   );
 
   final TextEditingController newPasswordConfirm = TextEditingController(
-      text: "VeryStrongNewPassword456!21"
+      text: "VeryStrongNewPassword456!"
   );
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -42,36 +42,22 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ResetPasswordCubit,ResetPasswordState>(
+    return BlocListener<ResetPasswordCubit,ResetPasswordState>(
        bloc: viewModel,
-        builder: (context, state) {
+        listener: (context, state) {
           if (state is ResetPasswordError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    state.errorMessage,
-                    style: AppTextStyle.bold16White,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.resetPassword, (route) => false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.yellow,
-                    ),
-                    child: Text(
-                      'Try Again',
-                      style: AppTextStyle.bold16White,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+              DialogUtils.showMessage(
+                  context: context,
+                  message: state.errorMessage);
 
-      return Scaffold(
+            }
+          if(state is ResetPasswordSuccess){
+            DialogUtils.showMessage(
+                context: context,
+                message: 'success reset password');
+          }
+         },
+      child: Scaffold(
         appBar: AppBar(
           title: Text('Reset Password'),
           leading: InkWell(
@@ -81,101 +67,100 @@ class _ResetPasswordState extends State<ResetPassword> {
             child: Icon(Icons.arrow_back, color: AppColors.yellow),
           ),
         ),
-         body: SingleChildScrollView(
-           child: Padding(
-             padding: const EdgeInsets.all(8.0),
-             child: Column(
-               children: [
-                 Image.asset(AppAssets.forgotPassword),
-                 Form(
-                   key: formKey,
-                   child: Column(
-                     children: [
-                       const SizedBox(height: 16),
-                       CustomTextField(
-                         validate: (text) {
-                           if (text == null || text.trim().isEmpty) {
-                             return 'Please enter old password';
-                           }
-                           return null;
-                         },
-                         // obscureText: true,
-                         cursorColor: AppColors.white,
-                         style: AppTextStyle.normal16White,
-                         controller: password,
-                         hintText: 'Old Password',
-                         prefixIcon: Icon(Icons.lock, color: AppColors.white),
-                         suffixIcon: Image.asset(
-                           AppAssets.eyeOff_Icon,
-                           color: AppColors.white,
-                         ),
-                       ),
-                       const SizedBox(height: 16),
-                       CustomTextField(
-                         validate: (text) {
-                           if (text == null || text.trim().isEmpty) {
-                             return 'Please enter new password';
-                           }
-                           if (text.length < 6) {
-                             return 'Password must be at least 6 characters';
-                           }
-                           return null;
-                         },
-                         cursorColor: AppColors.white,
-                         style: AppTextStyle.normal16White,
-                         controller: newPassword,
-                         hintText: 'New Password',
-                         prefixIcon: Icon(Icons.lock, color: AppColors.white),
-                         suffixIcon: Image.asset(
-                           AppAssets.eyeOff_Icon,
-                           color: AppColors.white,
-                         ),
-                       ),
-                       const SizedBox(height: 16),
-                       CustomTextField(
-                         validate: (text) {
-                           if (text == null || text.trim().isEmpty) {
-                             return 'Please confirm new password';
-                           }
-                           if (text != newPassword.text) {
-                             return 'Passwords do not match';
-                           }
-                           return null;
-                         },
-                         // obscureText: true,
-                         cursorColor: AppColors.white,
-                         style: AppTextStyle.normal16White,
-                         controller: newPasswordConfirm,
-                         hintText: 'Confirm New Password',
-                         prefixIcon: Icon(Icons.lock, color: AppColors.white),
-                         suffixIcon: Image.asset(
-                           AppAssets.eyeOff_Icon,
-                           color: AppColors.white,
-                         ),
-                       ),
-                       const SizedBox(height: 24),
-                     ],
-                   ),
-                 ),
-                 SizedBox(
-                   width: double.infinity,
-                   child:
-                   CustomButton(
-                     onPressed: () {
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Image.asset(AppAssets.forgotPassword),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        validate: (text) {
+                          if (text == null || text.trim().isEmpty) {
+                            return 'Please enter old password';
+                          }
+                          return null;
+                        },
+                        // obscureText: true,
+                        cursorColor: AppColors.white,
+                        style: AppTextStyle.normal16White,
+                        controller: password,
+                        hintText: 'Old Password',
+                        prefixIcon: Icon(Icons.lock, color: AppColors.white),
+                        suffixIcon: Image.asset(
+                          AppAssets.eyeOff_Icon,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        validate: (text) {
+                          if (text == null || text.trim().isEmpty) {
+                            return 'Please enter new password';
+                          }
+                          if (text.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                        cursorColor: AppColors.white,
+                        style: AppTextStyle.normal16White,
+                        controller: newPassword,
+                        hintText: 'New Password',
+                        prefixIcon: Icon(Icons.lock, color: AppColors.white),
+                        suffixIcon: Image.asset(
+                          AppAssets.eyeOff_Icon,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        validate: (text) {
+                          if (text == null || text.trim().isEmpty) {
+                            return 'Please confirm new password';
+                          }
+                          if (text != newPassword.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                        // obscureText: true,
+                        cursorColor: AppColors.white,
+                        style: AppTextStyle.normal16White,
+                        controller: newPasswordConfirm,
+                        hintText: 'Confirm New Password',
+                        prefixIcon: Icon(Icons.lock, color: AppColors.white),
+                        suffixIcon: Image.asset(
+                          AppAssets.eyeOff_Icon,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child:
+                  CustomButton(
+                    onPressed: () {
                       viewModel.changePassword(
                           newPass: newPassword.text,
                           oldPass: password.text);
-                     },
-                     text: 'Reset Password',
-                     textStyle: AppTextStyle.bold16Black,
-                   ),
-                 )
-               ],
-             ),
-           ),
-         ),
-      );
-    }
+                    },
+                    text: 'Reset Password',
+                    textStyle: AppTextStyle.bold16Black,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 

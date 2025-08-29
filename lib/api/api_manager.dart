@@ -87,8 +87,7 @@ class ApiManager {
     try {
 
 //timp token until take from cash
-  String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjQyMjg2NX0.0sbfgzPCB1k5d-644Od5BT9bXVzjNyhP_XZCGBCr4NI";
-
+  String token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjQyNjA3NX0.CVwlOXUHcsx6hITiVwNgvGR2POHwP0U8EkoyX8dDGEw";
       Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.resetPassword);
 
       var response = await http.patch(
