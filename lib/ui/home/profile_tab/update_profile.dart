@@ -7,21 +7,23 @@ import 'package:movies/utils/app_styles.dart';
 import '../../../api/api_manager.dart' as ApiManager;
 
 class UpdateProfile extends StatelessWidget {
-  const UpdateProfile({super.key});
+   UpdateProfile({super.key});
+  var email=TextEditingController(
+    text: "ans122@gmail.com"
+  );
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: AppColors.black,
+    return  Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.yellow),
           onPressed: () {
+    
 
-             Navigator.pop(context);
           },
         ),
         title: Text(
@@ -51,10 +53,11 @@ class UpdateProfile extends StatelessWidget {
 
 
               TextField(
+                controller: email,
                 style: TextStyle(color: AppColors.white),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person, color: Colors.white),
-                  hintText: "John Safwat",
+                  hintText: "email",
 
                   hintStyle: AppStyles.regular20white,
                   filled: true,
@@ -71,7 +74,7 @@ class UpdateProfile extends StatelessWidget {
                 style: TextStyle(color: AppColors.white),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.phone, color: AppColors.white),
-                  hintText: "01200000000",
+                  hintText: "number phone",
                   hintStyle: AppStyles.regular20white,
                   filled: true,
                   fillColor: AppColors.grey,
@@ -145,12 +148,7 @@ class UpdateProfile extends StatelessWidget {
                   onPressed: () async{
                     // todo: Update Data Logic
                     try {
-                      final result = await ApiManager.updateProfile(
-                        UpdateProfileRequest(
-                          name: "john safwat",
-                          phone: "0100000000",
-                        ),
-                      );
+                      final result = await ApiManager.updateProfile( email.text,"3");
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(result.message)),
                       );

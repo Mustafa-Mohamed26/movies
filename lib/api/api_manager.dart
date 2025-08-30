@@ -174,11 +174,8 @@ class ApiManager {
 
  Future<DeleteAccountResponse> deleteProfile() async {
   try {
-    String? token = await getToken();
-
-    if (token == null) {
-      throw Exception("User token not found!");
-    }
+    //this token for while
+    String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NDM2M30.3IXlGeIJRBIAcYr0CdSvZ406U_LaChd4AGZYhNUp3ZI";
 
     Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.deleteAccount);
 
@@ -209,24 +206,25 @@ class ApiManager {
     return prefs.getString("user_token");
   }
 
-  Future<UpdateProfileResponse> updateProfile(UpdateProfileRequest request) async {
+  Future<UpdateProfileResponse> updateProfile( String email,String avatarId) async {
   try {
-    String? token = await getToken();
+    //this token for while
 
-    if (token == null) {
-      throw Exception("User token not found!");
-    }
+    String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjJlNjc0YWNlZDU5ZTAyM2FkYmY1NSIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NTE3NH0.PA4mOdnEnBRJuWSjaQIalU1RiaOAdaIZMWnn08HUZGs";
+
+
 
     Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.updateProfile);
 
-    var response = await http.put(
+    var response = await http.patch(
       url,
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(request.toJson()),
-    );
+      body: {
+        "email": email,
+        "avaterId" : avatarId,
+      });
 
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
