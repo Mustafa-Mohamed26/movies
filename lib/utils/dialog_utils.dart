@@ -76,6 +76,7 @@ class DialogUtils {
       }
     }
     showDialog(
+      requestFocus: true,
       barrierDismissible: barrierDismissible,
       context: context,
       builder: (context) => AlertDialog(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/utils/app_routes.dart';
 
 import '../../../../api/api_manager.dart';
 import '../../../../models/login_request.dart';
@@ -9,10 +10,10 @@ class LoginViewModel extends Cubit<LoginStates>{
   LoginViewModel():super(LoginInitialState());
 
   var formKey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-
-  void login() async {
+  var emailController = TextEditingController(text: 'ans122@gmail.com');
+  var passwordController = TextEditingController(
+    text: "VeryStrongNewPassword456!",
+  )void login() async {
     if (formKey.currentState!.validate()) {
       try {
         emit(LoginLoadingState());
@@ -30,13 +31,14 @@ class LoginViewModel extends Cubit<LoginStates>{
           emit(
             LoginSuccessState(
               successMessage: response?.message ?? "success",
-              
+
             ),
+
           );
         }
       } catch (e) {
         emit(LoginErrorState(errorMessage: e.toString()));
       }
     }
-}
+  }
 }

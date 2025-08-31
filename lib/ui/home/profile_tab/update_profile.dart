@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:movies/models/update_profile_request.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
+import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_styles.dart';
 
 import '../../../api/api_manager.dart' as ApiManager;
 
 class UpdateProfile extends StatelessWidget {
-  const UpdateProfile({super.key});
+  UpdateProfile({super.key});
 
+  var email = TextEditingController();
+  var avatarId = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -51,6 +54,7 @@ class UpdateProfile extends StatelessWidget {
 
 
               TextField(
+                controller: email,
                 style: TextStyle(color: AppColors.white),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person, color: Colors.white),
@@ -68,6 +72,7 @@ class UpdateProfile extends StatelessWidget {
               SizedBox(height: height*0.02),
 
               TextField(
+                controller: avatarId,
                 style: TextStyle(color: AppColors.white),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.phone, color: AppColors.white),
@@ -120,6 +125,8 @@ class UpdateProfile extends StatelessWidget {
                         SnackBar(content: Text("خطأ: $e")),
                       );
                     }
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      AppRoutes.login, (route) => false,);
                   },
                   child: Text(
                     "Delete Account",
