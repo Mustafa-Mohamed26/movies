@@ -99,7 +99,7 @@ class ApiManager {
 
   }
 
-}
+
 
   static Future<LoginResponse> login({required String email, required String password}) async {
     try {
