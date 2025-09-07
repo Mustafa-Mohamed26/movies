@@ -13,10 +13,8 @@ import '../../../models/list_of_movies_response.dart';
 import '../../../models/movie_details_response.dart';
 import 'carousel_slider_New.dart';
 
-typedef OnTab = void Function()? ;
 class HomeScreenTab extends StatefulWidget {
-   HomeScreenTab({super.key,required this.onTab});
-   OnTab onTab;
+   HomeScreenTab({super.key});
   @override
   State<HomeScreenTab> createState() => _HomeScreenTabState();
 }
