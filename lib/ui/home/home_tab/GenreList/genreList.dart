@@ -11,8 +11,31 @@ import '../../../../utils/app_styles.dart';
 
 class GenreList extends StatefulWidget {
    GenreList({super.key});
-   final List<String> genres = ['Action', 'Drama', 'Comedy', 'Horror', 'Romance'];
-
+   final List<String> genres = [
+     "Action",
+     "Adventure",
+     "Animation",
+     "Biography",
+     "Comedy",
+     "Crime",
+     "Documentary",
+     "Drama",
+     "Family",
+     "Fantasy",
+     "Film-Noir",
+     "History",
+     "Horror",
+     "Music",
+     "Musical",
+     "Mystery",
+     "Romance",
+     "Sci-Fi",
+     "Sport",
+     "Thriller",
+     "War",
+     "Western"
+   ]
+;
 
    @override
   State<GenreList> createState() => _GenreListState();
