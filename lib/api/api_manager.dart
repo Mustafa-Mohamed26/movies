@@ -224,6 +224,83 @@ class ApiManager {
     }
   }
 
+  static Future<FavoriteResponse?> addFavorite({
+    required String? token,
+    required String movieId,
+    required String name,
+    required double rating,
+    required String imageURL,
+    required String year,
+  }) async {
+    Uri url = Uri.parse(
+      "https://${ApiConstants.baseUrl}${EndPoints.addFavoriteApi}",
+    );
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({
+          "movieId": movieId,
+          "name": name,
+          "rating": rating,
+          "imageURL": imageURL,
+          "year": year,
+        }),
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  static Future<FavoriteResponse?> deleteFavorite({
+    required String? token,
+    required String movieId,
+  }) async {
+    Uri url = Uri.parse(
+      "https://${ApiConstants.baseUrl}${EndPoints.deleteFavoriteApi}/$movieId",
+    );
+    try {
+      var response = await http.delete(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  static Future<FavoriteResponse?> isFavorite({
+    required String? token,
+    required String movieId,
+  }) async {
+    Uri url = Uri.parse(
+      "https://${ApiConstants.baseUrl}${EndPoints.isFavoriteApi}/$movieId",
+    );
+    try {
+      var response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   static Future<UserResponse?> getProfile({required String token}) async {
     Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.profileApi);
     try {
