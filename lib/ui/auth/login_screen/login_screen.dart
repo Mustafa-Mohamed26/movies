@@ -130,11 +130,11 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SizedBox(height: height * 0.03),
                 CustomSwitch(
-                  value: true,
-                  onToggle: onToggle,
-                  activeIcon: Image.asset(AppAssets.amricaFlag),
-                  inactiveIcon: Image.asset(AppAssets.egyptFlagIcon),
-                ),
+                value: true,
+                onToggle: onToggle,
+                activeIcon: Image.asset(AppAssets.americaFlag),
+                inactiveIcon: Image.asset(AppAssets.egyptFlagIcon)
+            )
               ],
             ),
           ),
