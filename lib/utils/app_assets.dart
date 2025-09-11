@@ -1,17 +1,17 @@
-
-class AppAssets{
-  static const String logo = 'assets/images/mainLogo.png' ;
-  static const String mailIcon = 'assets/images/mailIcon.png' ;
-  static const String lockIcon = 'assets/images/lockIcon.png' ;
-  static const String hiddenIcon = 'assets/images/hiddenIcon.png' ;
-  static const String googleIcon = 'assets/images/googleIcon.png' ;
-  static const String egyptFlagIcon = 'assets/images/egyptFlag.png' ;
-  static const String americaFlag = 'assets/images/amricaFlag.png' ;
-  static const String eyeOff_Icon = "assets/icons/icon _eye off_.png" ;
-  static const String identification_Icon = "assets/icons/icon _Identification_.png" ;
-  static const String lock_Icon = "assets/icons/icon _Lock_.png" ;
-  static const String email_Icon = "assets/icons/icon _Mail_.png" ;
-  static const String phone_Icon = "assets/icons/icon _Phone_.png" ;
+class AppAssets {
+  static const String logo = 'assets/images/mainLogo.png';
+  static const String mailIcon = 'assets/images/mailIcon.png';
+  static const String lockIcon = 'assets/images/lockIcon.png';
+  static const String hiddenIcon = 'assets/images/hiddenIcon.png';
+  static const String googleIcon = 'assets/images/googleIcon.png';
+  static const String egyptFlagIcon = 'assets/images/egyptFlag.png';
+  static const String americaFlag = 'assets/images/amricaFlag.png';
+  static const String eyeOff_Icon = "assets/icons/icon _eye off_.png";
+  static const String identification_Icon =
+      "assets/icons/icon _Identification_.png";
+  static const String lock_Icon = "assets/icons/icon _Lock_.png";
+  static const String email_Icon = "assets/icons/icon _Mail_.png";
+  static const String phone_Icon = "assets/icons/icon _Phone_.png";
   static const String homeIcon = "assets/icons/home_icon.png";
   static const String searchIcon = "assets/icons/search_icon.png";
   static const String browseIcon = "assets/icons/browse_icon.png";
@@ -45,4 +45,5 @@ class AppAssets{
   static const String starIcon = "assets/images/star.png";
   static const String availableNow = "assets/images/AvailableNow.png";
   static const String watchNow = "assets/images/WatchNow.png";
+  static const String emptyListIcon = 'assets/images/emity_list.png';
 }

@@ -10,4 +10,7 @@ class EndPoints {
   static String login = '/auth/login';
   static String deleteAccount = '/profile';
   static String updateProfile = '/profile';
+  static String allFavoritesApi = "/favorites/all";
+    static String profileApi = "/profile";
+
 }
