@@ -6,11 +6,11 @@ import '../../../../../api/api_manager.dart';
 class GenreListView extends Cubit<GenreStats>{
   GenreListView():super(LoadingStats());
   // todo hold data handel logic
-  void getMoviesByGenre()async{
+  void getMoviesByGenre({required String genre})async{
     try{
       //todo Loading
       emit(LoadingStats());
-      var movies = await ApiManager.getNewMoviesListByGenre("Action");
+      var movies = await ApiManager.getNewMoviesListByGenre(genre);
       if(movies.status!='ok'){
         //todo error
         emit(ErrorStats(errorMessage:'some thing erorr'));

@@ -48,31 +48,19 @@ class _HomeScreenTabState extends State<HomeScreenTab> {
                 ],),)
               ;
             }else if(state is SuccessStats){
-              return Column(children: [
+              return
+                Column(children: [
                 // Center(child: Text('${state.movies[1].year}')),
                 // Image.network('${state.movies[1].mediumCoverImage}')
                 Padding(
                   padding:  EdgeInsets.only(top:height*.045),
-                  child: Image(image: AssetImage(AppAssets.availableNow)),
+
                 ),
                 CarouselSliderNew(movies: state.movies,),
-                SizedBox(height: height*0.01,),
-                Image(image: AssetImage(AppAssets.watchNow)),
-                SizedBox(height: height*0.01,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Action',style: AppStyles.regular20white,),
-                    TextButton(onPressed: () {}, 
-                        child: Row(
-                          children: [
-                            Text('See More',style: AppStyles.regular16yellow,),
-                            SizedBox(width: width*0.01,),
-                            Icon(Icons.arrow_forward,color: AppColors.yellow,)
-                          ],
-                        ))
-                  ],
-                ),
+                 SizedBox(height: height*0.01,),
+
+
+
                 GenreList()
               ],);
             }
