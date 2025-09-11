@@ -3,15 +3,15 @@ import 'package:movies/api/api_manager.dart';
 import 'package:movies/models/update_profile_request.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
+import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/api_manager.dart' as ApiManager;
 
 class UpdateProfile extends StatefulWidget {
-   final String? token;
-   UpdateProfile({super.key,
-   required this.token});
+
+   UpdateProfile({super.key,});
 
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
@@ -48,9 +48,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: AppColors.black,
       appBar: AppBar(
-        backgroundColor: AppColors.black,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.yellow),
           onPressed: () {
@@ -64,7 +62,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
         ),
       ),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding:  EdgeInsets.symmetric(
+          horizontal: width*0.02
+        ),
         child: Container(
           margin: EdgeInsets.symmetric(
             vertical: height*0.035,
@@ -80,7 +80,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   context: context,
                   builder: (context) {
                     return Container(
-                      padding: EdgeInsets.all(16),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width*0.02
+                      ),
                       height: 410,
                       color: AppColors.grey,
                       child: GridView.builder(
@@ -145,7 +147,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 style: TextStyle(color: AppColors.white),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.phone, color: AppColors.white),
-                  hintText: "01200000000",
+                  hintText: "Phone Number",
                   hintStyle: AppStyles.regular20white,
                   filled: true,
                   fillColor: AppColors.grey,
@@ -162,7 +164,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 alignment: Alignment.centerLeft,
                 child: TextButton(
                   onPressed: () {
-                    // todo: forget password
+                    Navigator.of(context).pushNamed(AppRoutes.resetPassword);
                   },
                   child: Text(
                     "Reset Password",
@@ -185,7 +187,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   onPressed: () async{
                     // TODO: Delete Account Logic
                     try {
-                      final result = await deleteProfile(widget.token);
+                      final result = await deleteProfile();
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(result.message)),

@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.onboarding2: (context) => OnBoarding(),
         AppRoutes.home: (context) => HomeScreen(),
         AppRoutes.profile: (context) => ProfileScreen(),
-        AppRoutes.updateProfile: (context) => UpdateProfile(token: '',),
+        AppRoutes.updateProfile: (context) => UpdateProfile(),
         AppRoutes.details: (context) {
           final movieId = ModalRoute.of(context)!.settings.arguments as int;
           return DetailsScreen(movieId: movieId);

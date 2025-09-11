@@ -180,9 +180,9 @@ class ApiManager {
   }
 
 
-Future<DeleteAccountResponse> deleteProfile(String? token) async {
+Future<DeleteAccountResponse> deleteProfile() async {
   try {
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NDM2M30.3IXlGeIJRBIAcYr0CdSvZ406U_LaChd4AGZYhNUp3ZI";
+    String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NDM2M30.3IXlGeIJRBIAcYr0CdSvZ406U_LaChd4AGZYhNUp3ZI";
 
     Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.deleteAccount);
 
