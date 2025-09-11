@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/utils/app_routes.dart';
 
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
@@ -23,6 +24,7 @@ class LoginScreen extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return BlocListener<LoginViewModel, LoginStates>(
+      bloc: viewModel,
       listener: (BuildContext context, state) {
         if (state is LoginLoadingState) {
           DialogUtils.showLoading(context: context, loadingText: "Loading...");
@@ -32,6 +34,7 @@ class LoginScreen extends StatelessWidget {
             context: context,
             message: state.successMessage,
           );
+          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.resetPassword, (route) => false,);
         } else if (state is LoginErrorState) {
           DialogUtils.hideLoading(context: context);
           DialogUtils.showMessage(

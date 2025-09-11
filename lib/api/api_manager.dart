@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:movies/api/api_constants.dart';
 import 'package:movies/api/end_points.dart';
+import 'package:movies/api/token.dart';
 import 'package:movies/models/favorite_response.dart';
 import 'package:movies/models/login_request.dart';
 import 'package:movies/models/login_response.dart';
@@ -45,6 +46,7 @@ class ApiManager {
     required bool withCast,
     required bool withImages,
   }) async {
+    var token =await Token.getToken();
     Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.movieDetailsApi, {
       "movie_id": movieId.toString(),
       "with_cast": withCast ? "true" : "false",
@@ -52,7 +54,9 @@ class ApiManager {
     });
 
     try {
-      var response = await http.get(url);
+      var response = await http.get(url,headers: {
+        'Authorization': 'Bearer $token',
+      });
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return MovieDetailsResponse.fromJson(json);
@@ -64,6 +68,7 @@ class ApiManager {
   static Future<MovieSuggestionsResponse?> getMovieSuggestions({
     required int? movieId,
   }) async {
+    var token= await Token.getToken();
     Uri url = Uri.https(
       ApiConstants.moviesBaseUrl,
       EndPoints.movieSuggestionsApi,
@@ -71,7 +76,10 @@ class ApiManager {
     );
 
     try {
-      var response = await http.get(url);
+      var response = await http.get(url,
+          headers: {
+          'Authorization': 'Bearer $token',
+          });
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return MovieSuggestionsResponse.fromJson(json);
@@ -79,7 +87,6 @@ class ApiManager {
       throw Exception(e);
     }
   }
-
   static Future<LoginResponse?> login(LoginRequest loginRequest) async {
     Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.loginApi);
     try {
@@ -87,20 +94,28 @@ class ApiManager {
         url,
         body: {'email': loginRequest.email, 'password': loginRequest.password},
       );
-      var responseBody = response.body;
-      var json = jsonDecode(responseBody);
-      return LoginResponse.fromJson(json);
+
+      var responseBody =  response.body;
+      var json =  jsonDecode(responseBody);
+      var loginResponse = LoginResponse.fromJson(json);
+      await Token.saveToken(loginResponse.token!);
+      return loginResponse;
     } catch (e) {
-      throw Exception(e);
+      throw e.toString();
     }
   }
 
   static Future<ListOfMoviesResponse> getNewMoviesList() async {
+    var token=await Token.getToken();
     Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.listMoviesApi, {
       "sort_by": " years",
     });
     try {
-      var response = await http.get(url);
+      var response = await http.get(url,
+          headers: {
+          'Authorization': 'Bearer $token',
+          }
+          );
       var responseBody = response.body;
       log(responseBody);
       var json = jsonDecode(responseBody);
@@ -114,11 +129,15 @@ class ApiManager {
   static Future<ListOfMoviesResponse> getNewMoviesListByGenre(
     String genre,
   ) async {
+    var token=await Token.getToken();
     Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.listMoviesApi, {
       "genre": genre,
     });
     try {
-      var response = await http.get(url);
+      var response = await http.get(url,
+          headers: {
+          'Authorization': 'Bearer $token',
+          });
       var responseBody = response.body;
       log(responseBody);
       var json = jsonDecode(responseBody);
@@ -129,19 +148,14 @@ class ApiManager {
     }
   }
 
-  Future<void> _storeToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_token', token);
-  }
 
-  Future<ResetPasswordResponse?> changePassword({
+
+  static Future<ResetPasswordResponse?> changePassword({
     required String newPass,
     required String oldPass,
   }) async {
     try {
-      //timp token until take from cash
-      String token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjQyNjA3NX0.CVwlOXUHcsx6hITiVwNgvGR2POHwP0U8EkoyX8dDGEw";
+     var token =await Token.getToken();
       Uri url = Uri.https(
         ApiConstants.moviesAuthBaseUrl,
         EndPoints.resetPassword,
@@ -170,13 +184,9 @@ class ApiManager {
     }
   }
 
-  Future<DeleteAccountResponse> deleteProfile() async {
+  static Future<DeleteAccountResponse> deleteProfile() async {
     try {
-      String? token = await getToken();
-
-      if (token == null) {
-        throw Exception("User token not found!");
-      }
+      var token = await Token.getToken();
 
       Uri url = Uri.https(
         ApiConstants.moviesAuthBaseUrl,
@@ -319,20 +329,15 @@ class ApiManager {
     }
   }
 
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString("user_token");
-  }
 
-  Future<UpdateProfileResponse> updateProfile(
+
+ static Future<UpdateProfileResponse> updateProfile(
     UpdateProfileRequest request,
   ) async {
     try {
-      String? token = await getToken();
+     var token =await Token.getToken();
 
-      if (token == null) {
-        throw Exception("User token not found!");
-      }
+
 
       Uri url = Uri.https(
         ApiConstants.moviesAuthBaseUrl,
