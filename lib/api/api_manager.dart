@@ -87,12 +87,13 @@ class ApiManager {
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return LoginResponse.fromJson(json);
+    }catch(e){
+      throw e.toString();
+    }
+  }
 
 
-
-
-
-  static Future<ListOfMoviesResponse> getNewMoviesList()async{
+    static  Future<ListOfMoviesResponse> getNewMoviesList()async{
     Uri url = Uri.https(ApiConstants.moviesBaseUrl,
     EndPoints.listMoviesApi,
       {
@@ -114,7 +115,7 @@ class ApiManager {
 
   }
 
-  static Future<ListOfMoviesResponse> getNewMoviesListByGenre(String genre)async{
+    static Future<ListOfMoviesResponse> getNewMoviesListByGenre(String genre)async{
     Uri url = Uri.https(ApiConstants.moviesBaseUrl,
     EndPoints.listMoviesApi,
 {
@@ -179,73 +180,97 @@ class ApiManager {
   }
 
 
-
-
- Future<DeleteAccountResponse> deleteProfile() async {
+Future<DeleteAccountResponse> deleteProfile(String? token) async {
   try {
-    String? token = await getToken();
-
-    if (token == null) {
-      throw Exception("User token not found!");
-    }
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NDM2M30.3IXlGeIJRBIAcYr0CdSvZ406U_LaChd4AGZYhNUp3ZI";
 
     Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.deleteAccount);
 
-    var response = await http.delete(
+    final response = await http.delete(
       url,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
       },
     );
 
     if (response.statusCode == 200) {
-      var responseBody = response.body;
-      var json = jsonDecode(responseBody);
-      return DeleteAccountResponse.fromJson(json);
-    }
-    else {
-      throw Exception(
-          "Delete failed: ${response.statusCode} - ${response.body}");
+      if (response.body.isNotEmpty) {
+        return DeleteAccountResponse.fromJson(json.decode(response.body));
+      } else {
+        return DeleteAccountResponse(message: "Account deleted successfully");
+      }
+    } else {
+      throw Exception('Failed to delete account: ${response.statusCode}');
     }
   } catch (e) {
-    throw Exception(e.toString());
+    print('Error deleting account: $e');
+    throw Exception('Failed to delete account: $e');
   }
 }
 
-   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString("user_token");
-  }
-
-  Future<UpdateProfileResponse> updateProfile(UpdateProfileRequest request) async {
+ Future<UpdateProfileResponse> updateProfile(
+    String? token, UpdateProfileRequest request) async {
   try {
-    String? token = await getToken();
-
-    if (token == null) {
-      throw Exception("User token not found!");
-    }
-
+    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDFkMGFkODZlM2ZmZmIwM2IzOGEwOCIsImVtYWlsIjoiYW1yMjRAZ21haWwuY29tIiwiaWF0IjoxNzMyMzY4MDQ1fQ.vhf0NBQzj8EE9AinCX3ezu4yz1R8CNpt8xBawnTyMhw';
     Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.updateProfile);
 
-    var response = await http.put(
+    final response = await http.patch(
       url,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
       },
       body: jsonEncode(request.toJson()),
     );
 
     if (response.statusCode == 200) {
-      var json = jsonDecode(response.body);
-      return UpdateProfileResponse.fromJson(json);
+      if (response.body.isNotEmpty) {
+        return UpdateProfileResponse.fromJson(jsonDecode(response.body));
+      } else {
+        return UpdateProfileResponse(
+            message: "Profile updated successfully", success: true);
+      }
     } else {
-      throw Exception(
-          "Update failed: ${response.statusCode} - ${response.body}");
+      throw Exception('Failed to update profile: ${response.statusCode}');
     }
   } catch (e) {
-    throw Exception(e.toString());
+    print('Error updating profile: $e');
+    throw Exception('Failed to update profile: $e');
   }
-
 }
+
+  /*Future<UpdateProfileResponse> updateProfile(String email, String avatarId) async {
+    try {
+      String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjJlNjc0YWNlZDU5ZTAyM2FkYmY1NSIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NTE3NH0.PA4mOdnEnBRJuWSjaQIalU1RiaOAdaIZMWnn08HUZGs";
+
+
+      if (token == null) {
+        throw Exception("User token not found!");
+      }
+
+      Uri url = Uri.https(
+          ApiConstants.moviesAuthBaseUrl, EndPoints.updateProfile);
+
+      var response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+          body: {
+            "email": email,
+            "avaterId" : avatarId,
+          });
+
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        return UpdateProfileResponse.fromJson(json);
+      } else {
+        throw Exception(
+            "Update failed: ${response.statusCode} - ${response.body}");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }*/
