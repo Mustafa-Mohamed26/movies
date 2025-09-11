@@ -16,6 +16,8 @@ import 'package:movies/widgets/custom_card.dart';
 import 'package:movies/widgets/custom_rank.dart';
 import 'package:movies/widgets/custom_screen_shot.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class DetailsScreen extends StatefulWidget {
   final int movieId;
   const DetailsScreen({super.key, required this.movieId});
@@ -171,7 +173,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   imageURL: state.movie!.largeCoverImage,
                                   year:
                                       state.movie!.year?.toString() ??
-                                      "AppLocalizations.of(context,)!.details_unKnown,",
+                                      AppLocalizations.of(context,)!.details_unKnown,
                                 );
 
                                 await detailsViewModel.saveMovie(movieToSave);
@@ -219,13 +221,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               imageURL: state.movie!.largeCoverImage,
                               year:
                                   state.movie!.year?.toString() ??
-                                  "AppLocalizations.of(context)!.details_unKnown",
+                                  AppLocalizations.of(context)!.details_unKnown,
                             );
 
                             await detailsViewModel.saveMovie(movieToSave);
                           },
                           text:
-                              "AppLocalizations.of(context,)!.details_screen_watch",
+                              AppLocalizations.of(context,)!.details_screen_watch,
                           textStyle: AppStyles.bold20white,
                           backgroundColor: AppColors.red,
                           borderColorSide: AppColors.red,
@@ -251,7 +253,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         // screen short section
                         SizedBox(height: height * 0.02),
                         Text(
-                          "AppLocalizations.of(context)!.details_screen_shots",
+                          AppLocalizations.of(context)!.details_screen_shots,
                           style: AppStyles.bold20white,
                         ),
                         SizedBox(height: height * 0.01),
@@ -270,7 +272,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         // similar section
                         SizedBox(height: height * 0.02),
                         Text(
-                          "AppLocalizations.of(context)!.details_screen_Similar",
+                          AppLocalizations.of(context)!.details_screen_Similar,
                           style: AppStyles.bold20white,
                         ),
                         SizedBox(height: height * 0.01),
@@ -334,20 +336,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         // summary section
                         SizedBox(height: height * 0.02),
                         Text(
-                          "AppLocalizations.of(context)!.details_screen_summary",
+                          AppLocalizations.of(context)!.details_screen_summary,
                           style: AppStyles.bold20white,
                         ),
                         SizedBox(height: height * 0.01),
                         Text(
                           state.movie?.descriptionIntro ??
-                              "AppLocalizations.of(context,)!.details_screen_no_description",
+                              AppLocalizations.of(context,)!.details_screen_no_description,
                           style: AppStyles.regular16white,
                         ),
 
                         // cast section
                         SizedBox(height: height * 0.02),
                         Text(
-                          "AppLocalizations.of(context)!.details_screen_cast",
+                          AppLocalizations.of(context)!.details_screen_cast,
                           style: AppStyles.bold20white,
                         ),
                         SizedBox(height: height * 0.01),
@@ -408,7 +410,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         // Genres section
                         SizedBox(height: height * 0.02),
                         Text(
-                          "AppLocalizations.of(context)!.details_screen_genres",
+                          AppLocalizations.of(context)!.details_screen_genres,
                           style: AppStyles.bold20white,
                         ),
                         SizedBox(height: height * 0.01),

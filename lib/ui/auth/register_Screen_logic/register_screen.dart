@@ -4,6 +4,7 @@ import 'package:colorful_iconify_flutter/icons/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/ui/auth/register_Screen_logic/bloc/register_view_model.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
@@ -14,6 +15,7 @@ import 'package:movies/widgets/custom_button.dart';
 import 'package:movies/widgets/custom_switch.dart';
 import 'package:movies/widgets/custom_text_form_field.dart';
 
+import '../../../bloc/language_cubit.dart';
 import 'bloc/register_states.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -42,16 +44,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
   RegisterViewModel viewModel = RegisterViewModel();
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var languageCubit = context.read<LanguageCubit>();
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.arrow_back),
-        title: Text(
-          'Register',
+        title: Text(AppLocalizations.of(context)!.register,
           style: AppStyles.regular16yellow,
         ),
       ),
@@ -59,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         bloc: viewModel,
         listener: ( context,  state) {
           if(state is RegisterLoadingState){
-            DialogUtils.showLoading(context: context, loadingText: "Loading...");
+            DialogUtils.showLoading(context: context, loadingText: AppLocalizations.of(context)!.loading);
           }
           if(state is RegisterErrorState){
             DialogUtils.hideLoading(context: context);
@@ -104,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       cursorColor: AppColors.white,
                         controller: viewModel. nameController,
                         prefixIcon: Image.asset(AppAssets.identification_Icon) ,
-                      hintText: 'Name',
+                      hintText: AppLocalizations.of(context)!.name,
                       hintStyle: AppStyles.regular16white,
                     ),
                     SizedBox(height: height*0.02,),
@@ -113,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       cursorColor: AppColors.white,
                       controller: viewModel. emailController,
                         prefixIcon: Image.asset(AppAssets.email_Icon) ,
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.email,
                       hintStyle: AppStyles.regular16white,
                     ),
                     SizedBox(height: height*0.02,),
@@ -122,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       cursorColor: AppColors.white,
                       controller: viewModel. passwordController,
                         prefixIcon: Image.asset(AppAssets.lock_Icon) ,
-                      hintText: 'Password',
+                      hintText: AppLocalizations.of(context)!.password,
                       hintStyle: AppStyles.regular16white,
                       suffixIcon: Image.asset(AppAssets.eyeOff_Icon),
                     ),
@@ -132,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       cursorColor: AppColors.white,
                       controller: viewModel. confirmPasswordController,
                         prefixIcon: Image.asset(AppAssets.lock_Icon) ,
-                      hintText: 'Confirm Password',
+                      hintText: AppLocalizations.of(context)!.confirm_password,
                       hintStyle: AppStyles.regular16white,
                       suffixIcon: Image.asset(AppAssets.eyeOff_Icon),
                     ),
@@ -142,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       cursorColor: AppColors.white,
                       controller: viewModel.phoneController,
                         prefixIcon: Image.asset(AppAssets.phone_Icon) ,
-                      hintText: 'Phone Number',
+                      hintText: AppLocalizations.of(context)!.phone_number,
                       hintStyle: AppStyles.regular16white,
                       
                     ),
@@ -152,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           // todo : create an account & Navigate to Home Screen
                           Navigator.of(context).pushNamed(AppRoutes.home);
                         },
-                        text: 'Create Account',
+                        text: AppLocalizations.of(context)!.create_account,
                       textStyle: AppStyles.regular20black,
                     ),
                     SizedBox(height: height*0.01,),
@@ -160,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Already Have Account ?',
+                          AppLocalizations.of(context)!.already_have_account,
                           style: AppStyles.regular16white,
                         ),
                         TextButton(
@@ -169,7 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               Navigator.of(context).pushNamed(AppRoutes.login);
                             },
                             child: Text(
-                              'Login',
+                              AppLocalizations.of(context)!.login,
                               style: AppStyles.bold14yellow,
                             )
                         )
@@ -180,18 +181,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               CustomSwitch(
-                  value: isEnglish,
-                  onToggle: (val) {
-                    if (val) {
-                      isEnglish = true;
-                      setState(() {});
-                    } else {
-                      isEnglish = false;
-                      setState(() {});
-                    }
-                  },
-                  activeIcon: Iconify(CircleFlags.lr),
-                  inactiveIcon: Iconify(CircleFlags.eg),
+                value: isEnglish,
+                onToggle: (val) {
+                  if (val) {
+                    isEnglish = true;
+                    setState(() {
+                      languageCubit.changeLanguage(Locale("en"));
+                    });
+                  } else {
+                    isEnglish = false;
+                    setState(() {
+                      languageCubit.changeLanguage(Locale("ar"));
+                    });
+                  }
+                },
+                activeIcon: Iconify(CircleFlags.lr),
+                inactiveIcon: Iconify(CircleFlags.eg),
               ),
             ],
           ),
