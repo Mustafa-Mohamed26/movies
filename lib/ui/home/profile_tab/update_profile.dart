@@ -7,7 +7,7 @@ import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../api/api_manager.dart' as ApiManager;
+import '../../../l10n/app_localizations.dart';
 
 class UpdateProfile extends StatefulWidget {
 
@@ -57,7 +57,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           },
         ),
         title: Text(
-          "Pick Avatar",
+          AppLocalizations.of(context)!.pick_avatar,
           style: AppStyles.regular16yellow,
         ),
       ),
@@ -167,7 +167,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     Navigator.of(context).pushNamed(AppRoutes.resetPassword);
                   },
                   child: Text(
-                    "Reset Password",
+                    AppLocalizations.of(context)!.reset_password,
                     style: AppStyles.regular20white,
                   ),
                 ),
@@ -202,7 +202,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     }
                   },
                   child: Text(
-                    "Delete Account",
+                    AppLocalizations.of(context)!.delete_account,
                     style: AppStyles.regular20white,
                   ),
                 ),
@@ -244,7 +244,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     },
 
                   child: Text(
-                      "Update Data",
+                      AppLocalizations.of(context)!.update_data,
                       style: AppStyles.regular20black
                   ),
                 ),

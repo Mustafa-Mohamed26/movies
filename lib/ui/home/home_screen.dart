@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movies/ui/home/browse_tab/browse_screen_tab.dart';
 import 'package:movies/ui/home/home_tab/home_screen_tab.dart';
+import 'package:movies/ui/home/profile_tab/profile_screen_tab.dart';
+import 'package:movies/ui/home/search_tab/search_screen_tab.dart';
 import 'package:movies/utils/app_styles.dart';
 import 'package:movies/widgets/custom_bottom_nav_bar.dart';
 
@@ -24,10 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      HomeScreenTab(onTab: changeCurrentIndex),
-      Center(child: Text("Page 1", style: AppStyles.medium36white,)),
-      Center(child: Text("Page 2", style: AppStyles.medium36white,)),
-      Center(child: Text("Page 3", style: AppStyles.medium36white,)),
+      HomeScreenTab(),
+      SearchTab(),
+      BrowseScreenTab(),
+      ProfileTab()
     ];
 
     var width = MediaQuery.of(context).size.width;
@@ -39,11 +42,5 @@ class _HomeScreenState extends State<HomeScreen> {
         onTabSelected: onTabSelected,
       ),
     );
-  }
-  void changeCurrentIndex(){
-    currentIndex=2;
-    setState(() {
-
-    });
   }
 }

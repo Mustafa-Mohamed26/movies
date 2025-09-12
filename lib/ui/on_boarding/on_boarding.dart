@@ -4,6 +4,8 @@ import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_text_style.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
 
@@ -23,20 +25,21 @@ class _OnBoardingState extends State<OnBoarding> {
     AppAssets.onBoarding5,
   ];
 
-  List<String> title = [
-    'Discover Movies',
-    'Explore All Genres',
-    'Create Watchlists',
-    'Rate, Review, and Learn',
-    'Start Watching Now',
+  late List<String> title = [
+    AppLocalizations.of(context)!.onboarding2_title1,
+    AppLocalizations.of(context)!.onboarding2_title2,
+    AppLocalizations.of(context)!.onboarding2_title3,
+    AppLocalizations.of(context)!.onboarding2_title4,
+    AppLocalizations.of(context)!.onboarding2_title5,
   ];
 
-  List<String> description = [
-    'Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.',
-    'Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.',
-    'Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.',
-    'Share your thoughts on the movies you\'ve watched. Dive deep into film details and help others discover great movies with your reviews.',
-    'Ready to dive into the world of cinema? Start your movie journey now with our extensive collection.',
+  late List<String> description = [
+    AppLocalizations.of(context)!.onboarding2_subtitle1,
+    AppLocalizations.of(context)!.onboarding2_subtitle2,
+    AppLocalizations.of(context)!.onboarding2_subtitle3,
+    AppLocalizations.of(context)!.onboarding2_subtitle4,
+    AppLocalizations.of(context)!.onboarding2_subtitle1,
+
   ];
 
   @override
@@ -131,8 +134,9 @@ class _OnBoardingState extends State<OnBoarding> {
                         ),
                         child: Text(
                           selectIndex < backGround.length - 1
-                              ? 'Next'
-                              : 'Get Started',
+                              ?     AppLocalizations.of(context)!.next
+
+                            : AppLocalizations.of(context)!.finish,
                           style: AppTextStyle.bold20White,
                         ),
                       ),
@@ -162,7 +166,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             ),
                           ),
                           child: Text(
-                            'Back',
+                            AppLocalizations.of(context)!.back,
                             style: AppTextStyle.bold20White.copyWith(
                               color: AppColors.yellow,
                             ),

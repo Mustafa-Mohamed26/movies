@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:movies/api/api_constants.dart';
 import 'package:movies/api/end_points.dart';
+import 'package:movies/api/token.dart';
+import 'package:movies/models/favorite_response.dart';
 import 'package:movies/models/login_request.dart';
 import 'package:movies/models/login_response.dart';
 import 'package:movies/models/delete_account_response.dart';
@@ -19,16 +21,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/login_response.dart' show LoginResponse;
 
-
 class ApiManager {
-  static Future<UserResponse?> register ({required UserRequest user})async{
+  static Future<UserResponse?> register({required UserRequest user}) async {
     Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.registerApi, {
-      "name":user.name,
-      "email":user.email,
+      "name": user.name,
+      "email": user.email,
       "password": user.password,
-      "confirmPassword":user.confirmPassword,
-      "phone":user.phone,
-      "avaterId": user.avaterId.toString()
+      "confirmPassword": user.confirmPassword,
+      "phone": user.phone,
+      "avaterId": user.avaterId.toString(),
     });
     try {
       var response = await http.post(url);
@@ -38,13 +39,36 @@ class ApiManager {
     } catch (e) {
       throw Exception(e);
     }
-
   }
+  static Future<ListOfMoviesResponse?> getListOfMovies({
+    String? genre,
+    int? limit,
+    int? page,
+    String? query,
+  }) async {
+    Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.listMoviesApi, {
+      "genre": genre,
+      "limit": limit.toString(),
+      "page": page.toString(),
+      "query_term": query,
+    });
+
+    try {
+      var response = await http.get(url);
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return ListOfMoviesResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   static Future<MovieDetailsResponse?> getMovieDetails({
     required int? movieId,
     required bool withCast,
     required bool withImages,
   }) async {
+    var token =await Token.getToken();
     Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.movieDetailsApi, {
       "movie_id": movieId.toString(),
       "with_cast": withCast ? "true" : "false",
@@ -52,7 +76,9 @@ class ApiManager {
     });
 
     try {
-      var response = await http.get(url);
+      var response = await http.get(url,headers: {
+        'Authorization': 'Bearer $token',
+      });
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return MovieDetailsResponse.fromJson(json);
@@ -60,15 +86,21 @@ class ApiManager {
       throw Exception(e);
     }
   }
-
-  static Future<MovieSuggestionsResponse?> getMovieSuggestions({required int? movieId,}) async {
+  static Future<MovieSuggestionsResponse?> getMovieSuggestions({
+    required int? movieId,
+  }) async {
+    var token= await Token.getToken();
     Uri url = Uri.https(
-      ApiConstants.moviesBaseUrl, EndPoints.movieSuggestionsApi,
+      ApiConstants.moviesBaseUrl,
+      EndPoints.movieSuggestionsApi,
       {"movie_id": movieId.toString()},
     );
 
     try {
-      var response = await http.get(url);
+      var response = await http.get(url,
+          headers: {
+          'Authorization': 'Bearer $token',
+          });
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return MovieSuggestionsResponse.fromJson(json);
@@ -76,7 +108,6 @@ class ApiManager {
       throw Exception(e);
     }
   }
-
   static Future<LoginResponse?> login(LoginRequest loginRequest) async {
     Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.loginApi);
     try {
@@ -84,75 +115,71 @@ class ApiManager {
         url,
         body: {'email': loginRequest.email, 'password': loginRequest.password},
       );
-      var responseBody = response.body;
-      var json = jsonDecode(responseBody);
-      return LoginResponse.fromJson(json);
-    }catch(e){
+      var responseBody =  response.body;
+      var json =  jsonDecode(responseBody);
+      var loginResponse = LoginResponse.fromJson(json);
+      await Token.saveToken(loginResponse.token!);
+      return loginResponse;
+    } catch (e) {
       throw e.toString();
     }
   }
 
-
-    static  Future<ListOfMoviesResponse> getNewMoviesList()async{
-    Uri url = Uri.https(ApiConstants.moviesBaseUrl,
-    EndPoints.listMoviesApi,
-      {
-        "sort_by":" years"
-      }
-
-    );
-    try{
-      var response = await http.get(url);
-      var responseBody = response.body;
-      log(responseBody);
-      var json = jsonDecode(responseBody);
-      return ListOfMoviesResponse.fromJson(json);
-
-    }catch(e){
-      log(e.toString());
-      throw e.toString();
-    }
-
-  }
-
-    static Future<ListOfMoviesResponse> getNewMoviesListByGenre(String genre)async{
-    Uri url = Uri.https(ApiConstants.moviesBaseUrl,
-    EndPoints.listMoviesApi,
-{
-  "genre" : genre
-}
-    );
-    try{
-      var response = await http.get(url);
-      var responseBody = response.body;
-      log(responseBody);
-      var json = jsonDecode(responseBody);
-      return ListOfMoviesResponse.fromJson(json);
-
-    }catch(e){
-      log(e.toString());
-      throw e.toString();
-    }
-
-  }
-
-}
-
-  
-
-   Future<void> _storeToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_token', token);
-
-
-  }
-
-   Future<ResetPasswordResponse?> changePassword({required String newPass, required String oldPass}) async {
+  static Future<ListOfMoviesResponse> getNewMoviesList() async {
+    var token=await Token.getToken();
+    Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.listMoviesApi, {
+      "sort_by": " years",
+    });
     try {
+      var response = await http.get(url,
+          headers: {
+          'Authorization': 'Bearer $token',
+          }
+          );
+      var responseBody = response.body;
+      log(responseBody);
+      var json = jsonDecode(responseBody);
+      return ListOfMoviesResponse.fromJson(json);
+    } catch (e) {
+      log(e.toString());
+      throw e.toString();
+    }
+  }
 
-//timp token until take from cash
-  String token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjQyNjA3NX0.CVwlOXUHcsx6hITiVwNgvGR2POHwP0U8EkoyX8dDGEw";
-      Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.resetPassword);
+  static Future<ListOfMoviesResponse> getNewMoviesListByGenre(
+    String genre,
+  ) async {
+    var token=await Token.getToken();
+    Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.listMoviesApi, {
+      "genre": genre,
+    });
+    try {
+      var response = await http.get(url,
+          headers: {
+          'Authorization': 'Bearer $token',
+          });
+      var responseBody = response.body;
+      log(responseBody);
+      var json = jsonDecode(responseBody);
+      return ListOfMoviesResponse.fromJson(json);
+    } catch (e) {
+      log(e.toString());
+      throw e.toString();
+    }
+  }
+
+
+
+  static Future<ResetPasswordResponse?> changePassword({
+    required String newPass,
+    required String oldPass,
+  }) async {
+    try {
+     var token =await Token.getToken();
+      Uri url = Uri.https(
+        ApiConstants.moviesAuthBaseUrl,
+        EndPoints.resetPassword,
+      );
 
       var response = await http.patch(
         url,
@@ -160,10 +187,7 @@ class ApiManager {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({
-          'oldPassword': oldPass,
-          'newPassword': newPass,
-        }),
+        body: jsonEncode({'oldPassword': oldPass, 'newPassword': newPass}),
       );
 
       if (response.statusCode == 200) {
@@ -171,106 +195,191 @@ class ApiManager {
         var json = jsonDecode(responseBody);
         return ResetPasswordResponse.fromJson(json);
       } else {
-        throw Exception("Failed to change password: ${response.statusCode} - ${response.body}");
+        throw Exception(
+          "Failed to change password: ${response.statusCode} - ${response.body}",
+        );
       }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
+  static Future<DeleteAccountResponse> deleteProfile() async {
+    try {
+      var token = await Token.getToken();
+
+
+      Uri url = Uri.https(
+        ApiConstants.moviesAuthBaseUrl,
+        EndPoints.deleteAccount,
+      );
+
+      var response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var responseBody = response.body;
+        var json = jsonDecode(responseBody);
+        return DeleteAccountResponse.fromJson(json);
+      } else {
+        throw Exception(
+          "Delete failed: ${response.statusCode} - ${response.body}",
+        );
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<FavoriteResponse?> getAllFavorites({
+    required String? token,
+  }) async {
+    Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.allFavoritesApi);
+    try {
+      var response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  static Future<FavoriteResponse?> addFavorite({
+    required String? token,
+    required String movieId,
+    required String name,
+    required double rating,
+    required String imageURL,
+    required String year,
+  }) async {
+    Uri url = Uri.parse(
+      "https://${ApiConstants.baseUrl}${EndPoints.addFavoriteApi}",
+    );
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({
+          "movieId": movieId,
+          "name": name,
+          "rating": rating,
+          "imageURL": imageURL,
+          "year": year,
+        }),
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+  static Future<FavoriteResponse?> deleteFavorite({
+    required String? token,
+    required String movieId,
+  }) async {
+    Uri url = Uri.parse(
+      "https://${ApiConstants.baseUrl}${EndPoints.deleteFavoriteApi}/$movieId",
+    );
+    try {
+      var response = await http.delete(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
     } catch (e) {
       throw Exception(e);
     }
   }
 
 
-Future<DeleteAccountResponse> deleteProfile() async {
-  try {
-    String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA5MjIwZmQ5MDk0NWNlODU5NTU5NCIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NDM2M30.3IXlGeIJRBIAcYr0CdSvZ406U_LaChd4AGZYhNUp3ZI";
-
-    Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.deleteAccount);
-
-    final response = await http.delete(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
+  static Future<FavoriteResponse?> isFavorite({
+    required String? token,
+    required String movieId,
+  }) async {
+    Uri url = Uri.parse(
+      "https://${ApiConstants.baseUrl}${EndPoints.isFavoriteApi}/$movieId",
     );
-
-    if (response.statusCode == 200) {
-      if (response.body.isNotEmpty) {
-        return DeleteAccountResponse.fromJson(json.decode(response.body));
-      } else {
-        return DeleteAccountResponse(message: "Account deleted successfully");
-      }
-    } else {
-      throw Exception('Failed to delete account: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Error deleting account: $e');
-    throw Exception('Failed to delete account: $e');
-  }
-}
-
- Future<UpdateProfileResponse> updateProfile(
-    String? token, UpdateProfileRequest request) async {
-  try {
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDFkMGFkODZlM2ZmZmIwM2IzOGEwOCIsImVtYWlsIjoiYW1yMjRAZ21haWwuY29tIiwiaWF0IjoxNzMyMzY4MDQ1fQ.vhf0NBQzj8EE9AinCX3ezu4yz1R8CNpt8xBawnTyMhw';
-    Uri url = Uri.https(ApiConstants.moviesAuthBaseUrl, EndPoints.updateProfile);
-
-    final response = await http.patch(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-      body: jsonEncode(request.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      if (response.body.isNotEmpty) {
-        return UpdateProfileResponse.fromJson(jsonDecode(response.body));
-      } else {
-        return UpdateProfileResponse(
-            message: "Profile updated successfully", success: true);
-      }
-    } else {
-      throw Exception('Failed to update profile: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Error updating profile: $e');
-    throw Exception('Failed to update profile: $e');
-  }
-}
-
-  /*Future<UpdateProfileResponse> updateProfile(String email, String avatarId) async {
     try {
-      String? token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjJlNjc0YWNlZDU5ZTAyM2FkYmY1NSIsImVtYWlsIjoiYW5zMTIyQGdtYWlsLmNvbSIsImlhdCI6MTc1NjU1NTE3NH0.PA4mOdnEnBRJuWSjaQIalU1RiaOAdaIZMWnn08HUZGs";
+      var response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      var json = jsonDecode(response.body);
+      return FavoriteResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
 
-      if (token == null) {
-        throw Exception("User token not found!");
-      }
+  static Future<UserResponse?> getProfile({required String token}) async {
+    Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.profileApi);
+    try {
+      var response = await http.get(
+        url,
+        headers: {
+          "Content-Type": "application/json", // to be able to send json
+          "Authorization": "Bearer $token", // to be able to send the token
+        },
+      );
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return UserResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
 
+  }
+
+ static Future<UpdateProfileResponse> updateProfile(
+    UpdateProfileRequest request,
+  ) async {
+    try {
+     var token =await Token.getToken();
       Uri url = Uri.https(
-          ApiConstants.moviesAuthBaseUrl, EndPoints.updateProfile);
-
+        ApiConstants.moviesAuthBaseUrl,
+        EndPoints.updateProfile,
+      );
       var response = await http.put(
         url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-          body: {
-            "email": email,
-            "avaterId" : avatarId,
-          });
+        body: jsonEncode(request.toJson()),
+      );
 
       if (response.statusCode == 200) {
         var json = jsonDecode(response.body);
         return UpdateProfileResponse.fromJson(json);
       } else {
         throw Exception(
-            "Update failed: ${response.statusCode} - ${response.body}");
+          "Update failed: ${response.statusCode} - ${response.body}",
+        );
       }
     } catch (e) {
       throw Exception(e.toString());
     }
-  }*/
+  }
+}

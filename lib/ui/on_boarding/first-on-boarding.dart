@@ -4,6 +4,8 @@ import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_text_style.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class FirstOnBoarding extends StatelessWidget {
   const FirstOnBoarding({super.key});
 
@@ -35,7 +37,7 @@ class FirstOnBoarding extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Find Your Next\nFavorite Movie Here',
+                    AppLocalizations.of(context)!.onboarding1_line1,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.bold24White.copyWith(
                       decoration: TextDecoration.none,
@@ -48,7 +50,7 @@ class FirstOnBoarding extends StatelessWidget {
                   SizedBox(height: height * 0.03),
 
                   Text(
-                    'Get access to a huge library of movies\nto suit all tastes. You will surely like it.',
+                    AppLocalizations.of(context)!.onboarding1_line2,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.normal14White.copyWith(
                       decoration: TextDecoration.none,
@@ -71,7 +73,7 @@ class FirstOnBoarding extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Explore Now',
+                        AppLocalizations.of(context)!.onboarging1_explore,
                         style: AppTextStyle.bold20White,
                       ),
                     ),
