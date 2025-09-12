@@ -40,6 +40,28 @@ class ApiManager {
       throw Exception(e);
     }
   }
+  static Future<ListOfMoviesResponse?> getListOfMovies({
+    String? genre,
+    int? limit,
+    int? page,
+    String? query,
+  }) async {
+    Uri url = Uri.https(ApiConstants.moviesBaseUrl, EndPoints.listMoviesApi, {
+      "genre": genre,
+      "limit": limit.toString(),
+      "page": page.toString(),
+      "query_term": query,
+    });
+
+    try {
+      var response = await http.get(url);
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return ListOfMoviesResponse.fromJson(json);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
   static Future<MovieDetailsResponse?> getMovieDetails({
     required int? movieId,

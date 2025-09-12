@@ -5,6 +5,8 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
+import '../../../l10n/app_localizations.dart';
+
 class UpdateProfile extends StatelessWidget {
   const UpdateProfile({super.key});
 
