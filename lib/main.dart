@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:movies/bloc/user_cubit/user_cubit.dart';
+import 'package:movies/l10n/app_localizations.dart';
 import 'package:movies/models/movie_data.dart';
 import 'package:movies/ui/auth/login_screen/login_screen.dart';
 import 'package:movies/ui/details/details_screen.dart';
@@ -40,9 +41,7 @@ void main() async {
             ..getAllFavorites()
             ..loadHistory(),
         ),
-        BlocProvider<LanguageCubit>(
-          create: (_) => LanguageCubit(),
-        ),
+        BlocProvider<LanguageCubit>(create: (_) => LanguageCubit()),
       ],
       child: MyApp(),
     ),
@@ -58,30 +57,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-
-
-      initialRoute: AppRoutes.login,
-
-      routes: {
-        AppRoutes.login: (context) => LoginScreen(),
-        AppRoutes.register: (context) => RegisterScreen(),
-        AppRoutes.forgotPassword: (context) => ForgotPasswordScreen(),
-        AppRoutes.onboarding1: (context) => FirstOnBoarding(),
-        AppRoutes.onboarding2: (context) => OnBoarding(),
-        AppRoutes.home: (context) => HomeScreen(),
-        AppRoutes.profile: (context) => ProfileTab(),
-        AppRoutes.updateProfile: (context) => UpdateProfile(),
-        AppRoutes.details: (context) {
-          final movieId = ModalRoute.of(context)!.settings.arguments as int;
-          return DetailsScreen(movieId: movieId);
+    return BlocBuilder<LanguageCubit, Locale>(
+      builder: (context, locale) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+      
+        locale: locale,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        initialRoute: AppRoutes.login,
+      
+        routes: {
+          AppRoutes.login: (context) => LoginScreen(),
+          AppRoutes.register: (context) => RegisterScreen(),
+          AppRoutes.forgotPassword: (context) => ForgotPasswordScreen(),
+          AppRoutes.onboarding1: (context) => FirstOnBoarding(),
+          AppRoutes.onboarding2: (context) => OnBoarding(),
+          AppRoutes.home: (context) => HomeScreen(),
+          AppRoutes.profile: (context) => ProfileTab(),
+          AppRoutes.updateProfile: (context) => UpdateProfile(),
+          AppRoutes.details: (context) {
+            final movieId = ModalRoute.of(context)!.settings.arguments as int;
+            return DetailsScreen(movieId: movieId);
+          },
+          AppRoutes.resetPassword: (context) => ResetPassword(),
         },
-        AppRoutes.resetPassword: (context) => ResetPassword(),
-      },
-
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
+      
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.dark,
+      );
+      }
     );
   }
 }

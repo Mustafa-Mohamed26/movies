@@ -151,7 +151,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CustomButton(
                         onPressed: (){
                           // todo : create an account & Navigate to Home Screen
-                          Navigator.of(context).pushNamed(AppRoutes.home);
+                          viewModel.register();
+                          Navigator.of(context).pushNamed(AppRoutes.login);
                         },
                         text: AppLocalizations.of(context)!.create_account,
                       textStyle: AppStyles.regular20black,
@@ -166,7 +167,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         TextButton(
                             onPressed: (){
-                              viewModel.register();
                               Navigator.of(context).pushNamed(AppRoutes.login);
                             },
                             child: Text(

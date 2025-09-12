@@ -49,7 +49,7 @@ class DetailsViewModel extends Cubit<DetailsStates> {
         );
         return;
       }
-      emit(DetailsSuccessState(moviesList: response?.data?.movies?.map((e) => e as Movies).toList() ?? []));
+      emit(DetailsSuccessState(moviesList: response?.data?.movies ?? []));
     } catch (e) {
       emit(DetailsErrorState(errorMessage: e.toString()));
     }

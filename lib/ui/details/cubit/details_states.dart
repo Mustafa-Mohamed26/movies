@@ -1,7 +1,7 @@
 
 
-import 'package:movies/models/list_of_movies_response.dart';
 import 'package:movies/models/movie_details_response.dart';
+import 'package:movies/models/movie_suggestions_response.dart';
 
 abstract class DetailsStates {}
 class DetailsInitialState extends DetailsStates{}

@@ -187,7 +187,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   onPressed: () async{
                     // TODO: Delete Account Logic
                     try {
-                      final result = await deleteProfile();
+                      final result = await ApiManager.deleteProfile();
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(result.message)),
@@ -231,7 +231,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           avatarId: avatarIdController.text,
                         );
 
-                        final response = await updateProfile(token, request);
+                        final response = await ApiManager.updateProfile(request);
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(response.message)),

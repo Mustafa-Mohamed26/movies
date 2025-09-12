@@ -90,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     // todo: navigate to home Screen
                     viewModel.login();
+                    Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false,);
                   },
                   text: AppLocalizations.of(context)!.login,
                   textStyle: AppStyles.regular20black,
@@ -105,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         // todo : Navigate to register Screen
+                        Navigator.of(context).pushNamed(AppRoutes.register);
                       },
                       child: Text(AppLocalizations.of(context)!.create_account, style: AppStyles.bold14yellow),
                     ),
