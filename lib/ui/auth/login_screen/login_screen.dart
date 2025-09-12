@@ -145,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: height * 0.03),
                 CustomSwitch(
+
                   value: isEnglish,
                   onToggle: (val) {
                     if (val) {
@@ -161,6 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   activeIcon: Iconify(CircleFlags.lr),
                   inactiveIcon: Iconify(CircleFlags.eg),
+
                 ),
               ],
             ),

@@ -86,7 +86,6 @@ class ApiManager {
       throw Exception(e);
     }
   }
-
   static Future<MovieSuggestionsResponse?> getMovieSuggestions({
     required int? movieId,
   }) async {
@@ -116,7 +115,6 @@ class ApiManager {
         url,
         body: {'email': loginRequest.email, 'password': loginRequest.password},
       );
-
       var responseBody =  response.body;
       var json =  jsonDecode(responseBody);
       var loginResponse = LoginResponse.fromJson(json);
@@ -210,6 +208,7 @@ class ApiManager {
     try {
       var token = await Token.getToken();
 
+
       Uri url = Uri.https(
         ApiConstants.moviesAuthBaseUrl,
         EndPoints.deleteAccount,
@@ -288,7 +287,6 @@ class ApiManager {
       throw Exception(e);
     }
   }
-
   static Future<FavoriteResponse?> deleteFavorite({
     required String? token,
     required String movieId,
@@ -310,6 +308,7 @@ class ApiManager {
       throw Exception(e);
     }
   }
+
 
   static Future<FavoriteResponse?> isFavorite({
     required String? token,
@@ -333,6 +332,7 @@ class ApiManager {
     }
   }
 
+
   static Future<UserResponse?> getProfile({required String token}) async {
     Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.profileApi);
     try {
@@ -349,23 +349,18 @@ class ApiManager {
     } catch (e) {
       throw Exception(e);
     }
+
   }
-
-
 
  static Future<UpdateProfileResponse> updateProfile(
     UpdateProfileRequest request,
   ) async {
     try {
      var token =await Token.getToken();
-
-
-
       Uri url = Uri.https(
         ApiConstants.moviesAuthBaseUrl,
         EndPoints.updateProfile,
       );
-
       var response = await http.put(
         url,
         headers: {
