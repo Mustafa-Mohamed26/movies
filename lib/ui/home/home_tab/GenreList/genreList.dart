@@ -6,6 +6,7 @@ import 'package:movies/ui/home/home_tab/GenreList/cubit/genre_list_view.dart';
 import 'package:movies/ui/home/home_tab/GenreList/cubit/genry_stats.dart';
 import 'package:movies/utils/app_routes.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_styles.dart';
 
@@ -67,10 +68,10 @@ GenreListView viewModel =GenreListView();
             else if(state is ErrorStats){
               return
                 Center(child: Column(children: [
-                  Text('error',style: AppStyles.bold20white,),
+                  Text(AppLocalizations.of(context)!.error,style: AppStyles.bold20white,),
                   ElevatedButton(onPressed: (){
                     viewModel.getMoviesByGenre(genre: getRandomGenre());
-                  }, child: Text('try again'))
+                  }, child: Text(AppLocalizations.of(context)!.ok))
                 ],),);
             }
             else if(state is SuccessStatsByGenre){
@@ -84,7 +85,7 @@ GenreListView viewModel =GenreListView();
                      TextButton(onPressed: () {},
                          child: Row(
                            children: [
-                             Text('See More',style: AppStyles.regular16yellow,),
+                             Text(AppLocalizations.of(context)!.see_more,style: AppStyles.regular16yellow,),
                              SizedBox(width: width*0.01,),
                              Icon(Icons.arrow_forward,color: AppColors.yellow,)
                            ],

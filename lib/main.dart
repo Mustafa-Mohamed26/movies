@@ -19,6 +19,8 @@ import 'package:movies/utils/app_routes.dart';
 import 'package:movies/utils/app_theme.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'bloc/language_cubit.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize Flutter widgets
   final appDocumentDirectory =
@@ -37,6 +39,9 @@ void main() async {
             ..getProfile()
             ..getAllFavorites()
             ..loadHistory(),
+        ),
+        BlocProvider<LanguageCubit>(
+          create: (_) => LanguageCubit(),
         ),
       ],
       child: MyApp(),

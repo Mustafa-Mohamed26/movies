@@ -5,7 +5,6 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
-
 class UpdateProfile extends StatelessWidget {
   const UpdateProfile({super.key});
 
@@ -25,7 +24,7 @@ class UpdateProfile extends StatelessWidget {
           },
         ),
         title: Text(
-          "Pick Avatar",
+          AppLocalizations.of(context)!.pick_avatar,
           style: AppStyles.regular16yellow,
         ),
       ),
@@ -91,7 +90,7 @@ class UpdateProfile extends StatelessWidget {
                     // todo: forget password
                   },
                   child: Text(
-                    "Reset Password",
+                    AppLocalizations.of(context)!.reset_password,
                     style: AppStyles.regular20white,
                   ),
                 ),
@@ -122,7 +121,7 @@ class UpdateProfile extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    "Delete Account",
+                    AppLocalizations.of(context)!.delete_account,
                     style: AppStyles.regular20white,
                   ),
                 ),
@@ -161,7 +160,7 @@ class UpdateProfile extends StatelessWidget {
                     }
                   },
                   child: Text(
-                      "Update Data",
+                      AppLocalizations.of(context)!.update_data,
                       style: AppStyles.regular20black
                   ),
                 ),

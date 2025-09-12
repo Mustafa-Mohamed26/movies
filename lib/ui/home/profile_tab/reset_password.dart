@@ -10,6 +10,7 @@ import 'package:movies/utils/app_text_style.dart';
 import 'package:movies/widgets/custom_button.dart';
 import 'package:movies/widgets/custom_text_form_field.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../widgets/dialog_utils.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -56,12 +57,12 @@ class _ResetPasswordState extends State<ResetPassword> {
           if(state is ResetPasswordSuccess){
             DialogUtils.showMessage(
                 context: context,
-                message: 'success reset password');
+                message: AppLocalizations.of(context)!.success);
           }
          },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Reset Password'),
+          title: Text(AppLocalizations.of(context)!.reset_password),
           leading: InkWell(
             onTap: () {
               Navigator.pop(context);
@@ -85,7 +86,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       CustomTextField(
                         validate: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'Please enter old password';
+                            return AppLocalizations.of(context)!.validate_enter_password;
                           }
                           return null;
                         },
@@ -93,7 +94,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         cursorColor: AppColors.white,
                         style: AppTextStyle.normal16White,
                         controller: password,
-                        hintText: 'Old Password',
+                        hintText: AppLocalizations.of(context)!.validate_enter_password,
                         prefixIcon: Icon(Icons.lock, color: AppColors.white),
                         suffixIcon: Image.asset(
                           AppAssets.eyeOff_Icon,
@@ -104,17 +105,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                       CustomTextField(
                         validate: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'Please enter new password';
+                            return AppLocalizations.of(context)!.validate_enter_password;
                           }
-                          if (text.length < 6) {
-                            return 'Password must be at least 6 characters';
+                          if (text.length < 8) {
+                            return AppLocalizations.of(context)!.validate_8_characters;
                           }
                           return null;
                         },
                         cursorColor: AppColors.white,
                         style: AppTextStyle.normal16White,
                         controller: newPassword,
-                        hintText: 'New Password',
+                        hintText: AppLocalizations.of(context)!.password,
                         prefixIcon: Icon(Icons.lock, color: AppColors.white),
                         suffixIcon: Image.asset(
                           AppAssets.eyeOff_Icon,
@@ -125,10 +126,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                       CustomTextField(
                         validate: (text) {
                           if (text == null || text.trim().isEmpty) {
-                            return 'Please confirm new password';
+                            return AppLocalizations.of(context)!.validate_enter_password;
                           }
                           if (text != newPassword.text) {
-                            return 'Passwords do not match';
+                            return AppLocalizations.of(context)!.validate_not_match;
                           }
                           return null;
                         },
@@ -136,7 +137,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         cursorColor: AppColors.white,
                         style: AppTextStyle.normal16White,
                         controller: newPasswordConfirm,
-                        hintText: 'Confirm New Password',
+                        hintText: AppLocalizations.of(context)!.confirm_password,
                         prefixIcon: Icon(Icons.lock, color: AppColors.white),
                         suffixIcon: Image.asset(
                           AppAssets.eyeOff_Icon,
@@ -156,7 +157,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           newPass: newPassword.text,
                           oldPass: password.text);
                     },
-                    text: 'Reset Password',
+                    text: AppLocalizations.of(context)!.reset_password,
                     textStyle: AppTextStyle.bold16Black,
                   ),
                 )
