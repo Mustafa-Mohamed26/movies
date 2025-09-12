@@ -12,6 +12,8 @@ import 'package:movies/widgets/custom_button.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../l10n/app_localizations.dart';
+
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
 
@@ -99,7 +101,7 @@ class _ProfileTabState extends State<ProfileTab>
                                   "${state.movies?.length ?? 0}",
                                   style: AppStyles.bold36white,
                                 ),
-                                Text("AppLocalizations.of(context)!.wishList", style: AppStyles.bold20white),
+                                Text(AppLocalizations.of(context)!.wishList, style: AppStyles.bold20white),
                               ],
                             ),
                           ),
@@ -107,7 +109,7 @@ class _ProfileTabState extends State<ProfileTab>
                             child: Column(
                               children: [
                                 Text("${state.historyMovies?.length ?? 0}", style: AppStyles.bold36white),
-                                Text("AppLocalizations.of(context)!.history", style: AppStyles.bold20white),
+                                Text(AppLocalizations.of(context)!.history, style: AppStyles.bold20white),
                               ],
                             ),
                           ),
@@ -130,7 +132,7 @@ class _ProfileTabState extends State<ProfileTab>
                                   AppRoutes.updateProfile,
                                 );
                               },
-                              text: "AppLocalizations.of(context)!.edit_profile",
+                              text: AppLocalizations.of(context)!.edit_profile,
                               textStyle: AppStyles.regular20black,
                             ),
                           ),
@@ -148,7 +150,7 @@ class _ProfileTabState extends State<ProfileTab>
                                   (result) => false,
                                 );
                               },
-                              text: "AppLocalizations.of(context)!.exit",
+                              text: AppLocalizations.of(context)!.exit,
                               hasIcon: true,
                               iconWidget: const Icon(
                                 Icons.exit_to_app,
@@ -175,7 +177,7 @@ class _ProfileTabState extends State<ProfileTab>
                       controller: _tabController,
                       tabs: [
                         Tab(
-                          text: "AppLocalizations.of(context)!.wishList",
+                          text: AppLocalizations.of(context)!.wishList,
                           icon: Icon(
                             Icons.list,
                             size: height * 0.04,
@@ -183,7 +185,7 @@ class _ProfileTabState extends State<ProfileTab>
                           ),
                         ),
                         Tab(
-                          text: "AppLocalizations.of(context)!.history",
+                          text: AppLocalizations.of(context)!.history,
                           icon: Icon(
                             Icons.folder,
                             color: AppColors.yellow,

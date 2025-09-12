@@ -9,6 +9,7 @@ import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../models/list_of_movies_response.dart';
 import '../../../models/movie_details_response.dart';
 import 'carousel_slider_New.dart';
@@ -41,8 +42,8 @@ class _HomeScreenTabState extends State<HomeScreenTab> {
             }else if(state is ErrorStats){
               return
                 Center(child: Column(children: [
-                  Text('error',style: AppStyles.bold20white,),
-                  ElevatedButton(onPressed: viewModel.getNewMoviesList, child: Text('try again'))
+                  Text(AppLocalizations.of(context)!.error,style: AppStyles.bold20white,),
+                  ElevatedButton(onPressed: viewModel.getNewMoviesList, child: Text(AppLocalizations.of(context)!.ok))
                 ],),)
               ;
             }else if(state is SuccessStats){
