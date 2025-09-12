@@ -25,15 +25,15 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPasswordState extends State<ResetPassword> {
   final TextEditingController password = TextEditingController(
-      text: "VeryStrongNewPassword456!21"
+      text: "VeryStrongNewPassword456!"
   );
 
   final TextEditingController newPassword = TextEditingController(
-      text: "VeryStrongNewPassword456!"
+      text: "VeryStrongNewPassword456!21"
   );
 
   final TextEditingController newPasswordConfirm = TextEditingController(
-      text: "VeryStrongNewPassword456!"
+      text: "VeryStrongNewPassword456!21"
   );
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -43,6 +43,8 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
+    var height= MediaQuery.of(context).size.height;
+    var width= MediaQuery.of(context).size.width;
     return BlocListener<ResetPasswordCubit,ResetPasswordState>(
        bloc: viewModel,
         listener: (context, state) {
@@ -70,7 +72,9 @@ class _ResetPasswordState extends State<ResetPassword> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.symmetric(
+              horizontal: width*0.02
+            ),
             child: Column(
               children: [
                 Image.asset(AppAssets.forgotPassword),
@@ -78,7 +82,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   key: formKey,
                   child: Column(
                     children: [
-                      const SizedBox(height: 16),
+                       SizedBox(height:height*0.02),
                       CustomTextField(
                         validate: (text) {
                           if (text == null || text.trim().isEmpty) {
@@ -97,7 +101,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           color: AppColors.white,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                       SizedBox(height: height*0.02),
                       CustomTextField(
                         validate: (text) {
                           if (text == null || text.trim().isEmpty) {
@@ -118,7 +122,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           color: AppColors.white,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                       SizedBox(height: height*0.02),
                       CustomTextField(
                         validate: (text) {
                           if (text == null || text.trim().isEmpty) {
@@ -140,7 +144,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           color: AppColors.white,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                       SizedBox(height: height*0.03),
                     ],
                   ),
                 ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movies/api/api_manager.dart';
 import 'package:movies/models/update_profile_request.dart';
 import 'package:movies/utils/app_assets.dart';
 import 'package:movies/utils/app_colors.dart';
 import 'package:movies/utils/app_styles.dart';
-
-import '../../../api/api_manager.dart' as ApiManager;
-import '../../../l10n/app_localizations.dart';
 
 class UpdateProfile extends StatelessWidget {
   const UpdateProfile({super.key});

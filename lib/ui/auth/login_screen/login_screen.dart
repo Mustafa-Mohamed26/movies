@@ -1,8 +1,8 @@
 import 'package:colorful_iconify_flutter/icons/circle_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/utils/app_routes.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-
 import '../../../bloc/language_cubit.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_assets.dart';
@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var height = MediaQuery.of(context).size.height;
     var languageCubit = context.read<LanguageCubit>();
     return BlocListener<LoginViewModel, LoginStates>(
+      bloc: viewModel,
       listener: (BuildContext context, state) {
         if (state is LoginLoadingState) {
           DialogUtils.showLoading(context: context, loadingText: AppLocalizations.of(context)!.loading);
@@ -45,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context: context,
             message: state.successMessage,
           );
+          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.resetPassword, (route) => false,);
         } else if (state is LoginErrorState) {
           DialogUtils.hideLoading(context: context);
           DialogUtils.showMessage(
